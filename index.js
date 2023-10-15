@@ -303,13 +303,7 @@ const requestStorageData = (type, data) => {
             bunkerLastViewedEpisode: {}
         }));
     }
-    let storageData = JSON.parse(localStorage.getItem('storageData') ?? JSON.stringify({
-        bunkerCacheList: {},
-        bunkerMyList: [],
-        bunkerSearchHistoryList: [],
-        bunkerViewedHistoryList: [],
-        bunkerLastViewedEpisode: {}
-    }));
+    let storageData = JSON.parse(localStorage.getItem('storageData'));
 
     switch(type) {
         case v.stPut: {
@@ -324,7 +318,7 @@ const requestStorageData = (type, data) => {
             localStorage.removeItem('storageData');
             break;
         }
-        case v.stCacheGet: {
+        case v.stCacheGetContent: {
             try {  
                 const bunkerCacheList = storageData.bunkerCacheList[data.id];
                 if (valCheck(bunkerCacheList) && Date.now() - bunkerCacheList.timeAdded > data.timeExpire*60*1000) { 
@@ -393,7 +387,7 @@ const v = {
     stPut: 0,
     stGet: 1,
     stCachePut: 2,
-    stCacheGet: 3,
+    stCacheGetContent: 3,
     stClear: 4
 
 };
@@ -474,7 +468,7 @@ const d = {
             itemCardType: v.cardPosterTopRated,
             itemRequestSettings: {
                 method: v.methodGET,
-                url: v.baseUrl + '/toplist.html',
+                url: v.baseUrl + '/gh/cdnuhd/cdn/toplist.html',
                 params: '',
                 validator: 'class="items"',
                 timeExpire: 300 // 5 horas
@@ -701,7 +695,8 @@ const percentWithinViewport = (element) =>  {
 
 
 function init() { 
-    initPage(v.tagPage)
+    changeAppToolBarColor('appbar_layout', '#00000000');
+    initPage(v.tagPage);
     documentElem.on( "scroll", (event) => {
         let scrollTop = window.scrollY;
         let docHeight = document.body.offsetHeight;
@@ -801,7 +796,7 @@ async function imgPromise(uri, className) {
 }
 async function callAndroidAsync(data) {
     const rand = `asyncJava_${encodeString(data.url + data.params)}`;
-    const cacheDataOrErr = requestStorageData(v.stCacheGet, { id: rand, timeExpire: data.timeExpire });
+    const cacheDataOrErr = requestStorageData(v.stCacheGetContent, { id: rand, timeExpire: data.timeExpire });
     
 
     console.log(valCheck(cacheDataOrErr) ? `cache saved ----> ${rand}` : `cache no saved ----> ${rand}`)
@@ -829,7 +824,7 @@ async function callAndroidAsync(data) {
             });
         }catch (err) {
             return new Promise((resolve, reject) => {
-                let url = 'https://nplazers.in/req.php?data=' + btoa(JSON.stringify(data))
+                let url = (data.url.includes("/gh/cdnuhd/cdn/")) ? data.url : 'https://nplazers.in/req.php?data=' + btoa(JSON.stringify(data))
                 fetch(url)
                 .then(response => response.text())
                 .then((result) => {
@@ -1142,3 +1137,5 @@ function contentListToJsonList(dataParent, value) {
 }
 
 init();
+
+parent_sucess_script = true;
