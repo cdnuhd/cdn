@@ -7,7 +7,7 @@ const requestHtml = (type, data) => {
         case v.cardTitleList: {
             let itemTitle = data.itemTitle ?? '';
             let itemDesc = data.itemDesc ?? '';
-            let itemType = data.itemType ?? '';
+            let itemId = data.itemId ?? '';
 
             return `<div class="card-item-content">
                 <div class="card-item-title-content width-spaces">
@@ -16,7 +16,7 @@ const requestHtml = (type, data) => {
                 </div>
                 ${requestHtml(v.horizontalScrollerElem, 
                     {
-                        class: itemType,
+                        class: itemId,
                         content: requestHtml(v.itemList, data) 
                     }
                 )}
@@ -24,10 +24,10 @@ const requestHtml = (type, data) => {
         }
         case v.cardPosterFull: {
             randomColors();
-            let marquee = isMarquee(getTextWidth([data.itemTitle, 'card-top-title']), 420);
+            let marquee = isMarquee(getTextWidth([data.itemTitle, 'card-top-title']), 370);
             let posterBackground = data.itemPosterBackground ?? i.errorPoster;
-            let type = data.itemType ?? '';
-            let title = data.itemTitle ?? '';
+            let itemType = data.itemType ?? '';
+            let itemTitle = data.itemTitle ?? '';
 
             return `<div class="card-poster-full-content">
                 <section>
@@ -36,9 +36,9 @@ const requestHtml = (type, data) => {
                 
                         <div class="card-info-content">
                             <div class="card-top-desc-content">
-                                <div class="card-top-type darken-text">${type === "movie" ? t.movieTopType : t.serieTopType}</div>
-                                <div class="card-top-title ${marquee ? 'is-marquee' : 'no-marquee'}">${requestHtml(v.marqueeElem, {value: title, isMarquee: marquee})}</div>
-                                <div class="card-top-week">${type === "movie" ? t.movieTopWeek : t.serieTopWeek}</div>
+                                <div class="card-top-type darken-text">${itemType === "movie" ? t.movieTopType : t.serieTopType}</div>
+                                <div class="card-top-title ${marquee ? 'is-marquee' : 'no-marquee'}">${requestHtml(v.marqueeElem, {value: itemTitle, isMarquee: marquee})}</div>
+                                <div class="card-top-week">${itemType === "movie" ? t.movieTopWeek : t.serieTopWeek}</div>
                             </div>
         
         
@@ -146,13 +146,17 @@ const requestHtml = (type, data) => {
             </div>`;
         }
         case v.cardHomeContent: {
-            return `<div class="content">
-                <div class="view-flags"></div>
-                ${requestHtml(v.cardPosterFull, d.itemDetails)}
-                <div id="list">
-                    ${requestHtml(v.titleList, d.homeVizerList)}
-                </div>
-            </div>`;
+            if(valCheck(data[0])) {
+                return `<div class="content">
+                    <div class="view-flags"></div>
+                    ${requestHtml(v.cardPosterFull, data[0])}
+                    <div id="list">
+                        ${requestHtml(v.titleList, data[1])}
+                    </div>
+                </div>`;
+            }else {
+                return 'null';
+            }
         }
         case v.cardProgress: {
             return `<div class="progress-content">
@@ -297,10 +301,11 @@ const requestStorageData = (type, data) => {
     if(!localStorage.getItem('storageData')) {
         localStorage.setItem('storageData', JSON.stringify({
             bunkerCacheList: {},
+            bunkerViewedEpisodeList: {},
             bunkerMyList: [],
             bunkerSearchHistoryList: [],
             bunkerViewedHistoryList: [],
-            bunkerLastViewedEpisode: {}
+            bunkerTopRatedList: []
         }));
     }
     let storageData = JSON.parse(localStorage.getItem('storageData'));
@@ -318,22 +323,44 @@ const requestStorageData = (type, data) => {
             localStorage.removeItem('storageData');
             break;
         }
-        case v.stCacheGetContent: {
+        case v.stPutCache: {
+            try {
+                storageData.bunkerCacheList[data.id] = { timeAdded: Date.now(), content: data.content};
+                requestStorageData(v.stPut, storageData);
+            } catch (err) {}
+        }
+        case v.stPutList: {
+            try {
+                storageData[data.id] = data.content;
+                requestStorageData(v.stPut, storageData);
+            } catch(err) {}
+            break;
+        }
+        case v.stGetCacheContent: {
             try {  
                 const bunkerCacheList = storageData.bunkerCacheList[data.id];
                 if (valCheck(bunkerCacheList) && Date.now() - bunkerCacheList.timeAdded > data.timeExpire*60*1000) { 
                     delete storageData.bunkerCacheList[data.id];
                     requestStorageData(v.stPut, storageData);
-                    return 'null';
-                } 
+                    return v.null;
+                }
                 return bunkerCacheList.content;
-            } catch(err) {
-                return 'null';
-            }
+            } catch(err) {}
+                return v.null;
         }
-        case v.stCachePut: {
-                storageData.bunkerCacheList[data.id] = { timeAdded: Date.now(), content: data.content};
-                requestStorageData(v.stPut, storageData);
+        case v.stGetList: {
+            try {
+                return storageData[data.id];
+            } catch(err) {}
+                return [];
+        }
+        case v.stAddItem: {
+
+            break;
+        }
+        case v.stRemoveItem: {
+
+            break;
         }
     }
 }
@@ -386,9 +413,15 @@ const v = {
 
     stPut: 0,
     stGet: 1,
-    stCachePut: 2,
-    stCacheGetContent: 3,
-    stClear: 4
+    stClear: 2,
+    stPutCache: 3,
+    stGetCacheContent: 4,
+    stGetList: 5,
+    stPutList: 6,
+    stAddItem: 7,
+    stRemoveItem: 8,
+
+    null: 'null'
 
 };
 const i = {
@@ -429,11 +462,11 @@ const d = {
         itemYear: '2023',
         itemRate: '7,5'
     },
-    homeVizerList: [
+    homeMfhd50List: [
         {
             itemTitle: 'Minha lista',
             itemDesc: '',
-            itemType: 'mylist',
+            itemId: 'mylist',
             itemFont: v.fontMyList,
             itemCardType: v.cardPosterSeved,
             itemRequestSettings: {
@@ -448,14 +481,14 @@ const d = {
         {
             itemTitle: 'Lançamentos',
             itemDesc: 'ESTREIAS NOS CINEMAS',
-            itemType: 'movie',
-            itemFont: v.fontVizerJs,
+            itemId: 'movielist-1',
+            itemFont: v.fontMfhd50Site,
             itemCardType: v.cardPoster,
             itemRequestSettings: {
-                method: v.methodPOST,
-                url: 'https://vizer.tv/includes/ajax/publicFunctions.php',
-                params: 'getHomeSliderMovies=1',
-                validator: '"list":',
+                method: v.methodGET,
+                url: 'https://megafilmeshd50.com/ano/2023/',
+                params: '',
+                validator: 'class="items full"',
                 timeExpire: 300 // 5 horas
             },
             itemList: []
@@ -463,7 +496,7 @@ const d = {
         {
             itemTitle: 'Brasil: top 10 da semana',
             itemDesc: '',
-            itemType: 'toplist',
+            itemId: 'toplist',
             itemFont: v.fontMySite,
             itemCardType: v.cardPosterTopRated,
             itemRequestSettings: {
@@ -478,12 +511,181 @@ const d = {
         {
             itemTitle: 'Novos episódios',
             itemDesc: 'ÚLTIMAS SÉRIES ATUALIZADAS',
-            itemType: 'serie',
+            itemId: 'serielist-1',
+            itemFont: v.fontMfhd50Site,
+            itemCardType: v.cardPosterUpdated,
+            itemRequestSettings: {
+                method: v.methodGET,
+                url: 'https://megafilmeshd50.com/serie/',
+                params: '',
+                validator: 'id="archive-content"',
+                timeExpire: 300 // 5 horas
+            },
+            itemList: []
+        },
+        {
+            itemTitle: 'Novos filmes',
+            itemDesc: 'ÚLTIMOS FILMES ADICIONADOS',
+            itemId: 'movielist-2',
+            itemFont: v.fontMfhd50Site,
+            itemCardType: v.cardPoster,
+            itemRequestSettings: {
+                method: v.methodGET,
+                url: 'https://megafilmeshd50.com/filme/',
+                params: '',
+                validator: 'id="archive-content"',
+                timeExpire: 300 // 5 horas
+            },
+            itemList: []
+        },
+        {
+            itemTitle: 'Novos filmes',
+            itemDesc: 'ÚLTIMOS FILMES ADICIONADOS',
+            itemId: 'movielist-2',
+            itemFont: v.fontMfhd50Site,
+            itemCardType: v.cardPoster,
+            itemRequestSettings: {
+                method: v.methodGET,
+                url: 'https://megafilmeshd50.com/?s=kong',
+                params: '',
+                validator: 'class="result-item"',
+                timeExpire: 300 // 5 horas
+            },
+            itemList: []
+        }
+    ],
+    homeCinemaoList: [
+        {
+            itemTitle: 'Minha lista',
+            itemDesc: '',
+            itemId: 'mylist',
+            itemFont: v.fontMyList,
+            itemCardType: v.cardPosterSeved,
+            itemRequestSettings: {
+                method: v.methodGET,
+                url: '',
+                params: '',
+                validator: '',
+                timeExpire: 300 // 5 horas
+            },
+            itemList: []
+        },
+        {
+            itemTitle: 'Lançamentos',
+            itemDesc: 'ESTREIAS NOS CINEMAS',
+            itemId: 'movielist-1',
+            itemFont: v.fontCinemaoSite,
+            itemCardType: v.cardPoster,
+            itemRequestSettings: {
+                method: v.methodGET,
+                url: 'https://vfilmesonline.net/genero/lancamentos/',
+                params: '',
+                validator: 'class="items"',
+                timeExpire: 300 // 5 horas
+            },
+            itemList: []
+        },
+        {
+            itemTitle: 'Brasil: top 10 da semana',
+            itemDesc: '',
+            itemId: 'toplist',
+            itemFont: v.fontMySite,
+            itemCardType: v.cardPosterTopRated,
+            itemRequestSettings: {
+                method: v.methodGET,
+                url: v.baseUrl + '/gh/cdnuhd/cdn/toplist.html',
+                params: '',
+                validator: 'class="items"',
+                timeExpire: 300 // 5 horas
+            },
+            itemList: []
+        },
+        {
+            itemTitle: 'Novos filmes',
+            itemDesc: 'ÚLTIMOS FILMES ADICIONADOS',
+            itemId: 'movielist-2',
+            itemFont: v.fontCinemaoSite,
+            itemCardType: v.cardPoster,
+            itemRequestSettings: {
+                method: v.methodGET,
+                url: 'https://vfilmesonline.net/filme/',
+                params: '',
+                validator: 'id="archive-content"',
+                timeExpire: 300 // 5 horas
+            },
+            itemList: []
+        },
+        {
+            itemTitle: 'Filmes populares',
+            itemDesc: 'MAIS ACESSADOS DO MOMENTO',
+            itemId: 'movielist-3',
+            itemFont: v.fontCinemaoSite,
+            itemCardType: v.cardPoster,
+            itemRequestSettings: {
+                method: v.methodGET,
+                url: 'https://vfilmesonline.net/popular/',
+                params: '',
+                validator: 'class="items"',
+                timeExpire: 300 // 5 horas
+            },
+            itemList: []
+        }
+    ],
+    homeVizerList: [
+        {
+            itemTitle: 'Minha lista',
+            itemDesc: '',
+            itemId: 'mylist',
+            itemFont: v.fontMyList,
+            itemCardType: v.cardPosterSeved,
+            itemRequestSettings: {
+                method: v.methodGET,
+                url: '',
+                params: '',
+                validator: '',
+                timeExpire: 300 // 5 horas
+            },
+            itemList: []
+        },
+        {
+            itemTitle: 'Lançamentos',
+            itemDesc: 'ESTREIAS NOS CINEMAS',
+            itemId: 'movielist-1',
+            itemFont: v.fontVizerJs,
+            itemCardType: v.cardPoster,
+            itemRequestSettings: {
+                method: v.methodPOST,
+                url: 'https://vizer.tv/includes/ajax/publicFunctions.php',
+                params: 'getHomeSliderMovies=1',
+                validator: '"list":',
+                timeExpire: 300 // 5 horas
+            },
+            itemList: []
+        },
+        {
+            itemTitle: 'Brasil: top 10 da semana',
+            itemDesc: '',
+            itemId: 'toplist',
+            itemFont: v.fontMySite,
+            itemCardType: v.cardPosterTopRated,
+            itemRequestSettings: {
+                method: v.methodGET,
+                url: v.baseUrl + '/gh/cdnuhd/cdn/toplist.html',
+                params: '',
+                validator: 'class="items"',
+                timeExpire: 300 // 5 horas
+            },
+            itemList: []
+        },
+        {
+            itemTitle: 'Novos episódios',
+            itemDesc: 'ÚLTIMAS SÉRIES ATUALIZADAS',
+            itemId: 'serielist-1',
             itemFont: v.fontVizerJs,
             itemCardType: v.cardPosterUpdated,
             itemRequestSettings: {
                 method: v.methodPOST,
-                url: 'https://vizer.tv/includes/ajax/publicFunctions.php?getHomeSliderSeries=1',
+                url: 'https://vizer.tv/includes/ajax/publicFunctions.php',
                 params: 'getHomeSliderSeries=1',
                 validator: '"list":',
                 timeExpire: 300 // 5 horas
@@ -493,7 +695,7 @@ const d = {
         {
             itemTitle: 'Novos filmes',
             itemDesc: 'ÚLTIMOS FILMES ADICIONADOS',
-            itemType: 'movie',
+            itemId: 'movielist-2',
             itemFont: v.fontVizerJs,
             itemCardType: v.cardPoster,
             itemRequestSettings: {
@@ -508,7 +710,7 @@ const d = {
         {
             itemTitle: 'Novas séries',
             itemDesc: 'ÚLTIMAS SÉRIES ADICIONADAS',
-            itemType: 'serie',
+            itemId: 'serielist-2',
             itemFont: v.fontVizerJs,
             itemCardType: v.cardPoster,
             itemRequestSettings: {
@@ -517,96 +719,6 @@ const d = {
                 params: 'getHomeSliderSeries=2',
                 validator: '"list":',
                 timeExpire: 300 // 5 horas
-            },
-            itemList: []
-        },
-        {
-            itemTitle: 'Vizer site',
-            itemDesc: '',
-            itemType: '',
-            itemFont: v.fontVizerSite,
-            itemCardType: v.cardPoster,
-            itemRequestSettings: {
-                method: v.methodGET,
-                url: 'https://vizer.tv/pesquisar/walking',
-                params: '',
-                validator: 'class="listItems"',
-                timeExpire: 300 // 5 horas
-            },
-            itemList: []
-        },
-        {
-            itemTitle: 'Flixei site',
-            itemDesc: '',
-            itemType: '',
-            itemFont: v.fontFlixeiSite,
-            itemCardType: v.cardPoster,
-            itemRequestSettings: {
-                method: v.methodGET,
-                url: 'https://flixei.com/pesquisar/walking',
-                params: '',
-                validator: 'class="generalMoviesList"',
-                timeExpire: 300 // 5 horas
-            },
-            itemList: []
-        },
-        {
-            itemTitle: 'Cinemao site',
-            itemDesc: '',
-            itemType: '',
-            itemFont: v.fontCinemaoSite,
-            itemCardType: v.cardPoster,
-            itemRequestSettings: {
-                method: v.methodGET,
-                url: 'https://vfilmesonline.net/genero/lancamentos/',
-                params: '',
-                validator: 'class="items"',
-                timeExpire: 300 // 5 horas
-            },
-            itemList: []
-        },
-        {
-            itemTitle: 'Cinemao search',
-            itemDesc: '',
-            itemType: '',
-            itemFont: v.fontCinemaoSite,
-            itemCardType: v.cardPoster,
-            itemRequestSettings: {
-                method: v.methodGET,
-                url: 'https://vfilmesonline.net/?s=kong',
-                params: '',
-                validator: 'class="result-item"',
-                timeExpire: 300 // 5 horas
-            },
-            itemList: []
-        },
-        {
-            itemTitle: 'Mfhd50 site',
-            itemDesc: '',
-            itemType: '',
-            itemFont: v.fontMfhd50Site,
-            itemCardType: v.cardPoster,
-            itemRequestSettings: {
-                method: v.methodGET,
-                url: 'https://megafilmeshd50.com/filme/',
-                params: '',
-                validator: 'id="archive-content"',
-                timeExpire: 300 // 5 horas
-            },
-            itemList: []
-        },
-        {
-            itemTitle: 'Mfhd50 search',
-            itemDesc: '',
-            itemType: '',
-            itemFont: v.fontMfhd50Site,
-            itemCardType: v.cardPoster,
-            itemRequestSettings: {
-                method: v.methodGET,
-                url: 'https://megafilmeshd50.com/?s=kong',
-                params: '',
-                validator: 'class="result-item"',
-                timeExpire: 1 // 5 horas
             },
             itemList: []
         }
@@ -627,6 +739,10 @@ const d = {
     ],
     colorAlpha: [
         "00","03","05","08","0A","0D","0F","12","14","17","1A","1C","1F","21","24","26","29","2B","2E","30","33","36","38","3B","3D","40","42","45","47","4A","4D","4F","52","54","57","59","5C","5E","61","63","66","69","6B","6E","70","73","75","78","7A","7D","80","82","85","87","8A","8C","8F","91","94","96","99","9C","9E","A1","A3","A6","A8","AB","AD","B0","B3","B5","B8","BA","BD","BF","C2","C4","C7","C9","CC","CF","D1","D4","D6","D9","DB","DE","E0","E3","E6","E8","EB","ED","F0","F2","F5","F","FA","FC","FF"
+    ],
+    itemType: [
+        'movie',
+        'serie'
     ]
 };
 
@@ -731,16 +847,18 @@ function initPage(type) {
     }
     switch(type) {
         case v.homePage: {
-            let promises = d.homeVizerList.map(async data => {
-                const result = await callAndroidAsync(data.itemRequestSettings);
-                data.itemList = contentListToJsonList(data, result);
-                return result;
-            });
-
-            Promise.all(promises).then(data => {
-                setTimeout(function(){
-                    containerElem.html(requestHtml(v.cardHomeContent));
-                }, 1000);
+            Promise.all(d.homeVizerList.map(async data => {
+                data.itemList = contentListToJsonList(data, (data.itemId === 'mylist') ? requestStorageData(v.stGetList, 'bunkerMyList') : await callAndroidAsync(data.itemRequestSettings));
+                return data;
+            })).then(data => {
+                let topData = requestStorageData(v.stGetList, { id: 'bunkerTopRatedList' });
+                topData = objCheck(topData) ? getDataInListByValue(topData, ['itemType', d.itemType[Math.floor(Math.random() * d.itemType.length)]])[0] : getDataInListByValue(data, ['itemCardType', v.cardPoster])[0].itemList[0];
+                
+                containerElem.html(requestHtml(v.cardHomeContent, [
+                    topData,
+                    data
+                ]
+                ));
             });
             break;
         }
@@ -795,52 +913,48 @@ async function imgPromise(uri, className) {
     
 }
 async function callAndroidAsync(data) {
+    let retry = 0;
     const rand = `asyncJava_${encodeString(data.url + data.params)}`;
-    const cacheDataOrErr = requestStorageData(v.stCacheGetContent, { id: rand, timeExpire: data.timeExpire });
-    
+    const cacheDataOrErr = requestStorageData(v.stGetCacheContent, { id: rand, timeExpire: data.timeExpire });
+    window[rand] = {};
+    window[rand].init = (result) => {
+        const isValidData = valCheck(data.validator) && decodeHTMLEntities(result).includes(data.validator);
+        const dataOrErr = (valCheck(data.validator)) ? (isValidData) ? result : v.null : result;
+        if(isValidData) requestStorageData(v.stPutCache, { id: rand, content: dataOrErr });
 
-    console.log(valCheck(cacheDataOrErr) ? `cache saved ----> ${rand}` : `cache no saved ----> ${rand}`)
-    if(valCheck(cacheDataOrErr)) {
-        return new Promise((resolve, reject) => {
-            resolve(`{"cache": true, "content": ${cacheDataOrErr}}`);
-        });
+        window[rand].resolve(dataOrErr);
     }
-    else {
+    window[rand].run = () => {
         try {
-            window[rand] = {};
-            window[rand].init = () => {
-                const result = window.wv.runAsyncResult(rand);
-                const isValidData = decodeHTMLEntities(result).includes(data.validator);
-                const dataOrErr = (valCheck(data.validator)) ? (isValidData) ? result : 'null' : result;
-                if(valCheck(data.validator) && isValidData) {
-                    requestStorageData(v.stCachePut, { id: rand, content: JSON.stringify(dataOrErr) });
-                }
-                window[rand].resolve(dataOrErr);
-                delete window[rand];
-            }
             window.wv.runAsync(rand, JSON.stringify(data));
-            return new Promise((resolve, reject) => {
-                window[rand].resolve = (dataOrErr) => resolve(`{"cache": "false", "content": ${JSON.stringify(dataOrErr)}}`);
-            });
         }catch (err) {
-            return new Promise((resolve, reject) => {
-                let url = (data.url.includes("/gh/cdnuhd/cdn/")) ? data.url : 'https://nplazers.in/req.php?data=' + btoa(JSON.stringify(data))
-                fetch(url)
-                .then(response => response.text())
-                .then((result) => {
-                    const isValidData = decodeHTMLEntities(result).includes(data.validator);
-                    const dataOrErr = (valCheck(data.validator)) ? (isValidData) ? result : 'null' : result;
-                    if(valCheck(data.validator) && isValidData) {
-                        requestStorageData(v.stCachePut, { id: rand, content: JSON.stringify(dataOrErr) });
-                    }
-                    resolve(`{"cache": false, "content": ${JSON.stringify(dataOrErr)}}`);
-                })
-                .catch(err => {
-                    resolve(`{"cache": false, "content": "null"}`);
-                });
+            let url = (data.url.includes("/gh/cdnuhd/cdn/")) ? data.url : 'https://nplazers.in/req.php?data=' + btoa(JSON.stringify(data));
+            fetch(url)
+            .then(response => response.text())
+            .then((result) => {
+                window[rand].init(result);
+            })
+            .catch(err => {
+                window[rand].init(v.null);
             });
         }
+        console.log(retry + data.url);
     }
+    
+    if(valCheck(cacheDataOrErr)) setTimeout(() => window[rand].resolve(cacheDataOrErr), 0); 
+    else window[rand].run();
+    
+    return new Promise((resolve, reject) => {
+        window[rand].resolve = (dataOrErr) => {
+            if(!valCheck(dataOrErr) && retry <= 5) {
+                window[rand].run();
+                retry++;
+            }else {
+                resolve(dataOrErr);
+                delete window[rand];
+            }
+        };
+    });
 }
 
 function imageErrorReturn(value) {
@@ -851,6 +965,9 @@ function imageErrorReturn(value) {
 }
 function valCheck(v) {
     return (v === '' || typeof v === 'undefined' || v === null || v === 'null') ? false : true;
+}
+function objCheck(obj) {
+    return Object.keys(obj).length !== 0;
 }
 function valReturn(v) {
     try {
@@ -871,6 +988,21 @@ function getTextWidth(obj) {
     const isMarquee = elem.find('span').width() >= elem.width();
     elem.remove();
     return [width, isMarquee];
+}
+function getDataInListByValue(data, code) {
+    try {
+        if(valCheck(code[2])) {
+            return data.filter((data) => { return (data[code[0]] == code[1]); })[0][code[2]];
+        }
+        return data.filter((data) => { return data[code[0]] == code[1]; });
+    }catch (err) {}
+    return null;
+}
+function getObjectByName(data, name) {
+    try {
+        return data[name];
+    }catch (err) {}
+    return null;
 }
 function randColor() {
     let r = ('0'+(Math.random()*256|0).toString(16)).slice(-2),
@@ -940,38 +1072,13 @@ function changeAppToolBarColor(id, color) {
 }
 
 
-function contentListToJsonList(dataParent, value) {
-    let itemList = [];
-    let dataChild = decodeHTMLEntities(JSON.parse(value).content);
-    switch(dataParent.itemFont) {
-        case v.fontVizerJs: {
-            try {
-                let json = JSON.parse(dataChild);
-                $.each(json.list, function(i, d) {
-                    let item = {};
-                    item.itemId = valReturn(`vizer-${d.url}`);
-                    item.itemCardType = null;
-                    item.itemType = valReturn(dataParent.itemType);
-                    item.itemTitle = valReturn(d.title);
-                    item.itemPoster = valReturn(`https://vizer.tv/content/${dataParent.itemType === "movie" ? "movies" : "series"}/posterPt/185/${d.id}.webp`);
-                    item.itemPosterBackground = valReturn(`https://vizer.tv/content/${dataParent.itemType === "movie" ? "movies" : "series"}/background/1280/${d.id}.webp`);
-                    item.itemDetails = {
-                        itemType: valReturn(`vizer${dataParent.itemType}`),
-                        itemId: valReturn(`${d.id}`),
-                        itemName: valReturn(`${d.title}`),
-                        itemYear: valReturn(`${d.year}`)
-                    };
-                    item.itemYear = valReturn(d.year);
-                    item.itemRate = valReturn(d.rating);
-                    
-                    itemList.push(item);
-                });
-            } catch(err) {}
-            break;
-        }
+function contentListToJsonList(data, value) {
+    const list = [], content = decodeHTMLEntities(value);
+
+    switch(data.itemFont) {
         case v.fontMySite: {
             try {
-                let elem = $(dataChild);
+                let elem = $(content);
                 elem.find('div').each(function() {
                     let el = $(this);
                     let item = {};
@@ -982,30 +1089,68 @@ function contentListToJsonList(dataParent, value) {
                     item.itemTitle = valReturn(el.attr('data-itemtitle'));
                     item.itemPoster = valReturn(el.attr('data-itemposter'));
                     item.itemPosterBackground = valReturn(el.attr('data-itemposterbackground'));
-                    item.itemDetails = JSON.parse(valReturn(el.attr('data-itemdetails') ?? '{}'));
+                    item.itemDetails = JSON.parse(atob(valReturn(el.attr('data-itemdetails') ?? 'e30=')));
                     item.itemYear = valReturn(el.attr('data-itemyear'));
                     item.itemRate = valReturn(el.attr('data-itemrate'));
                     
-                    itemList.push(item);
+                    list.push(item);
                 });
-            } catch(err) {}
+
+                if(data.itemId === 'toplist' && objCheck(list)) requestStorageData(v.stPutList, { id: 'bunkerTopRatedList', content: list });
+            } catch(err) { console.log(err); }
+            break;
+        }
+        case v.fontVizerJs: {
+            try {
+                let json = JSON.parse(content);
+                $.each(json.list, function(i, d) {
+                    let item = {};
+
+                    let url = valReturn(d.url);
+                    let id = valReturn(d.id);
+                    let type = (!valCheck(d.status)) ? 'movie' : 'serie'
+                    let title = valReturn(d.title);
+                    let poster = valReturn(`https://vizer.tv/content/${type === "movie" ? 'movies' : 'series'}/posterPt/185/${id}.webp`);
+                    let posterBackground = valReturn(`https://vizer.tv/content/${type === "movie" ? 'movies' : 'series'}/background/1280/${id}.jpg`);
+                    let year = valReturn(d.year);
+                    let rate = valReturn(d.rating);
+                    
+
+                    item.itemId = valReturn(`vizer-${url}`);
+                    item.itemCardType = null;
+                    item.itemType = type;
+                    item.itemTitle = title;
+                    item.itemPoster = poster;
+                    item.itemPosterBackground = posterBackground;
+                    item.itemDetails = {
+                        itemType: valReturn(`vizer-${type}`),
+                        itemId: valReturn(`${id}`),
+                        itemName: valReturn(`${title}`),
+                        itemYear: valReturn(`${year}`)
+                    };
+                    item.itemYear = valReturn(year);
+                    item.itemRate = valReturn(rate);
+                    
+                    list.push(item);
+                });
+            } catch(err) { console.log(err); }
             break;
         }
         case v.fontVizerSite: {
             try {
-                let elem = $(getBodyContent(dataChild));
-                elem.find('.listItems a').each(function() {
+                let elem = $(getBodyContent(content));
+                elem.find('.listItems:last a').each(function() {
                     let el = $(this);
                     let item = {};
 
                     let url = valReturn(getPathNameByPosition(el.attr('href'), 2));
                     let id = valReturn(getPathNameByPosition(el.find('img').attr('src'), 5).split('.')[0]);
-                    let type = valReturn(getPathNameByPosition(el.attr('href'), 0).replace('filme', 'movie'));
-                    let title = valReturn(el.attr('title'));
+                    let type = valReturn(getPathNameByPosition(el.attr('href'), 0).replace('filme', 'movie').replace('series', 'serie'));
+                    let title = valReturn(el.find('.infos span').text());
                     let poster = valReturn(`https://vizer.tv/content/${type === "movie" ? 'movies' : 'series'}/posterPt/185/${id}.webp`);
                     let posterBackground = valReturn(`https://vizer.tv/content/${type === "movie" ? 'movies' : 'series'}/background/1280/${id}.jpg`);
-                    let year = valReturn(el.attr('data-rating'));
-                    let rate = valReturn(el.find('.y').text());
+                    let year = valReturn(el.find(type === 'movie' ? '.y' : '.r').text());
+                    let rate = valReturn(el.find(type === 'movie' ? '.r' : '.y').text());
 
                     item.itemId = `vizer-${url}`;
                     item.itemCardType = null;
@@ -1022,21 +1167,21 @@ function contentListToJsonList(dataParent, value) {
                     item.itemYear = year;
                     item.itemRate = rate;
                     
-                    itemList.push(item);
+                    list.push(item);
                 });
-            } catch(err) {}
+            } catch(err) { console.log(err); }
             break;
         }
         case v.fontFlixeiSite: {
             try {
-                let elem = $(getBodyContent(dataChild));
-                elem.find('.generalMoviesList a').each(function() {
+                let elem = $(getBodyContent(content));
+                elem.find('.generalMoviesList:last a').each(function() {
                     let el = $(this);
                     let item = {};
 
                     let url = valReturn(getPathNameByPosition(el.attr('href'), 2));
                     let id = valReturn(getPathNameByPosition(el.find('img').attr('src'), 5).split('.')[0]);
-                    let type = valReturn(getPathNameByPosition(el.attr('href'), 1).replace('filme', 'movie'));
+                    let type = valReturn(getPathNameByPosition(el.attr('href'), 1).replace('filme', 'movie').replace('series', 'serie'));
                     let title = valReturn(el.find('.i span').text());
                     let poster = valReturn(`https://flixei.com/content/${type === 'movie' ? 'movies' : 'series'}/posterPt/185/${id}.webp`);
                     let posterBackground = valReturn(`https://flixei.com/content/${type === 'movie' ? 'movies' : 'series'}/background/1280/${id}.jpg`);
@@ -1050,7 +1195,7 @@ function contentListToJsonList(dataParent, value) {
                     item.itemPoster = poster;
                     item.itemPosterBackground = posterBackground;
                     item.itemDetails = {
-                        itemType: `vizer${type}`,
+                        itemType: `vizer-${type}`,
                         itemId: `${id}`,
                         itemName: `${title}`,
                         itemYear: `${year}`
@@ -1058,25 +1203,25 @@ function contentListToJsonList(dataParent, value) {
                     item.itemYear = year;
                     item.itemRate = rate;
                     
-                    itemList.push(item);
+                    list.push(item);
                 });
-            } catch(err) {}
+            } catch(err) { console.log(err); }
             break;
         }
         case v.fontCinemaoSite: {
             try {
-                let elem = $(getBodyContent(dataChild));
-                elem.find('.items article, .result-item article').each(function() {
+                let elem = $(getBodyContent(content));
+                elem.find('.items:last article, .result-item:last article').each(function() {
                     let el = $(this);
                     let item = {};
 
                     let url = valReturn(getPathNameByPosition(el.find('a').attr('href'), 2));
-                    let type = valReturn(getPathNameByPosition(el.find('a').attr('href'), 1).replace('filme', 'movie'));
+                    let type = valReturn(getPathNameByPosition(el.find('a').attr('href'), 1).replace('filme', 'movie').replace('series', 'serie'));
                     let title = valReturn(el.find('img').attr('alt').split(' (')[0]);
                     let poster = valReturn(el.find('img').attr('data-wpfc-original-src') ?? el.find('img').attr('src')).replace('-150x150','-185x278');
                     let posterBackground = valReturn(el.find('img').attr('data-wpfc-original-src') ?? el.find('img').attr('src')).replace('-185x278', '');
-                    let year = valReturn(el.find('.data span a').text());
-                    let rate = valReturn(el.find('.derecha-rating').text());
+                    let year = valReturn(el.find('.year').text() !== '' ? el.find('.year').text() : el.find('.data span').text().split(', ')[1]);
+                    let rate = valReturn(el.find('.rating').text().split(' ')[1] ?? el.find('.rating').text());
 
                     item.itemId = `cinemao-${url}`;
                     item.itemCardType = null;
@@ -1085,31 +1230,34 @@ function contentListToJsonList(dataParent, value) {
                     item.itemPoster = poster;
                     item.itemPosterBackground = posterBackground;
                     item.itemDetails = {
-                        itemType: `cinemao${type}`,
-                        itemName: `${title}`
+                        itemType: `cinemao-${type}`,
+                        itemName: `${title}`,
+                        itemYear: `${year}`
                     };
                     item.itemYear = year;
                     item.itemRate = rate;
 
-                    itemList.push(item);
+                    if(type === 'movie') {
+                        list.push(item);
+                    }
                 });
-            } catch(err) {}
+            } catch(err) { console.log(err); }
             break;
         }
         case v.fontMfhd50Site: {
             try {
-                let elem = $(getBodyContent(dataChild));
-                elem.find('#archive-content article, .result-item article').each(function() {
+                let elem = $(getBodyContent(content));
+                elem.find('#archive-content:last article, .csearch:last .result-item article, .items:last article').each(function() {
                     let el = $(this);
                     let item = {};
 
                     let url = valReturn(getPathNameByPosition(el.find('a').attr('href'), 2));
-                    let type = valReturn(getPathNameByPosition(el.find('a').attr('href'), 1).replace('filme', 'movie'));
+                    let type = valReturn(getPathNameByPosition(el.find('a').attr('href'), 1).replace('filme', 'movie').replace('series', 'serie'));
                     let title = valReturn(el.find('img').attr('alt').split(' (')[0]);
                     let poster = valReturn(el.find('img').attr('data-wpfc-original-src') ?? el.find('img').attr('src')).replace('-150x150','-185x278').replace('w92', 'w185');
                     let posterBackground = valReturn(el.find('img').attr('data-wpfc-original-src') ?? el.find('img').attr('src')).replace('-185x278', '').replace('w185', 'original').replace('w92', 'original');
-                    let year = valReturn(el.find('.data span a').text());
-                    let rate = valReturn(el.find('.derecha-rating').text());
+                    let year = valReturn(el.find('.year').text() !== '' ? el.find('.year').text() : el.find('.data span').text().split(', ')[1]);
+                    let rate = valReturn(el.find('.rating').text().split(' ')[1] ?? el.find('.rating').text());
 
                     item.itemId = `mfhd50-${url}`;
                     item.itemCardType = null;
@@ -1118,22 +1266,24 @@ function contentListToJsonList(dataParent, value) {
                     item.itemPoster = poster;
                     item.itemPosterBackground = posterBackground;
                     item.itemDetails = {
-                        itemType: `mfhd50${type}`,
-                        itemName: `${title}`
+                        itemType: `mfhd50-${type}`,
+                        itemName: `${title}`,
+                        itemYear: `${year}`
                     };
                     item.itemYear = year;
                     item.itemRate = rate;
 
-                    if(type === 'movie') {
-                        itemList.push(item);
+                    if(!poster.includes('i.imgur.com')) {
+                        list.push(item);
                     }
                 });
-            } catch(err) {}
+            } catch(err) { console.log(err); }
             break;
         }
         default: {}
     }
-    return itemList;
+    console.log(list);
+    return list;
 }
 
 init();
