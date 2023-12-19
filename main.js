@@ -6918,6 +6918,7 @@ const adsRun = (onRetun) => {
         window[key].resolve(d.adStatus.success);
         localStorage.setItem('adFirst', 'false');
     }
+    else if(v.developerMode) window[key].resolve(d.adStatus.success);
     else setTimeout(() => window[key].run(key, 'e2f22299x', 0), 1000);
 
 }
