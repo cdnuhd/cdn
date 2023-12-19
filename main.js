@@ -2595,7 +2595,7 @@ const requestLoadList = (type) => {
                         itemRequestSettings: {
                             convertType: v.convertList,
                             method: v.methodGET,
-                            url: v.baseUrl + '/gh/cdnuhd/cdn/toplist.html',
+                            url: v.baseUrl + '/gh/cdnuhd/cdn/toplist.php',
                             params: '',
                             validator: 'class="items"',
                             timeExpire: v.timeExpire,
@@ -2756,7 +2756,7 @@ const requestLoadList = (type) => {
                         itemRequestSettings: {
                             convertType: v.convertList,
                             method: v.methodGET,
-                            url: v.baseUrl + '/gh/cdnuhd/cdn/toplist.html',
+                            url: v.baseUrl + '/gh/cdnuhd/cdn/toplist.php',
                             params: '',
                             validator: 'class="items"',
                             timeExpire: v.timeExpire,
