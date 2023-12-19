@@ -1,5 +1,3 @@
-
-
 const bodyElem = $("body"),
 htmlElem = $("html"),
 containerElem = $(".container"),
@@ -1918,6 +1916,63 @@ const requestHtml = (type = -1, data) => {
                         <button class="btn larger bg-darken-btn ripple round save icon-left empty" data-action="${v.actionRetryScrollerList}"><img class="lazy large-img" src="${i.retryWhite}"></button>
                     </div>`;
                 }
+                case v.errorInUserRegister: {
+                    return `<div class="alert-intro width-spaces">
+                        <div class="title-area">
+                            <div class="logo">
+                                ${requestHtml(v.imgElem, {
+                                    img: i.logoMark,
+                                    class: 'lazy-poster',
+                                    isLazy: false,
+                                    isObserver: false
+                                })}
+                            </div>
+                            <div class="title">${t.titleWelcome}</div>
+                            <div class="desc">${t.messageTerms}</div>
+                        </div>
+                        <div class="terms vertical-scroller">
+                            <section class="section-vertical-list">
+                                ${requestHtml(v.btnList, d.termsButtonList)}
+                            </section>
+                        </div>
+                        <div class="button">
+                            ${requestHtml(v.btnList, [{
+                                class: 'btn medium bg-white round ripple bold',
+                                attrs: `data-action="${v.actionRegisterUser}"`,
+                                text: t.termsAgre
+                            }])}
+                        </div>
+                    </div>`;
+                }
+                case v.errorInUpdate: {
+                    return `<div class="alert-update width-spaces">
+                        <div class="title-area">
+                            <div class="logo">
+                                ${requestHtml(v.imgElem, {
+                                    img: i.logoMark,
+                                    class: 'lazy-poster',
+                                    isLazy: false,
+                                    isObserver: false
+                                })}
+                            </div>
+                            <br><br>
+                            <div class="title">${t.titleUpdate}</div>
+                            <div class="desc">${t.messageUpdate}</div>
+                        </div>
+                        <div class="terms vertical-scroller">
+                            <section class="section-vertical-list">
+                                ${requestHtml(v.btnList, d.updateButtonList)}
+                            </section>
+                        </div>
+                        <div class="button">
+                            ${requestHtml(v.btnList, [{
+                                class: 'btn medium bg-white round ripple bold',
+                                attrs: `onclick="if(window.wv) window.wv.openLink('https://9max.wap.sh'); else window.open('https://9max.wap.sh', '_blank');"`,
+                                text: t.updateAgre
+                            }])}
+                        </div>
+                    </div>`;
+                }
                 default: return '';
             }
         }
@@ -2969,6 +3024,8 @@ const v = {
     errorInDns: 6,
     errorInPlayerOptions: 7,
     errorInSeason: 8,
+    errorInUserRegister: 9,
+    errorInUpdate: 10,
 
     requestActionVoiceRecover: 0,
     requestActionStartSearch: 1,
@@ -2986,6 +3043,7 @@ const v = {
     storeSearch: 'storeSearch_0',
     storeItem: 'storeItem_0',
     storeTopRated: 'storeTopRated_0',
+    storeUserSettings: 'storeUserSettings_0',
 
     actionToggleSaveItem: 0,
     actionLoadCat: 1,
@@ -3018,12 +3076,15 @@ const v = {
     actionLoadLangServers: 28,
     actionLoadEpisodes: 29,
     actionRemoveSaved: 30,
+    actionRegisterUser: 31,
 
     dialogEmpty: -1,
     dialogShowCategories: 0,
     dialogShowColletion: 1,
     dialogShowPlayerOptions: 2,
     dialogShowAlert: 3,
+    dialogShowIntro: 4,
+    dialogShowUpdate: 5,
 
     playerTv: 'tv',
     playerVizerLang: 'vizerLang',
@@ -3044,6 +3105,7 @@ const i = {
     saved: "./img/saved.png",
     more: "./img/more.png",
     logo: "./img/logo.png",
+    logoMark: "./img/logoMark.png",
     logoAlert: "./img/logoAlert.png",
     whats: "./img/whats.png",
     sad: "./img/sad.png",
@@ -3077,6 +3139,7 @@ const i = {
     live: "./img/live.png",
     timeBlack: "./img/timeBlack.png",
     youtube: "./img/youtube.png",
+    checkBox: "https://img.icons8.com/ios-filled/100/ffffff/checked-checkbox.png",
 
     ch_sbt: "./img/sbt.png",
     ch_globo: "./img/globo.png",
@@ -3210,6 +3273,8 @@ const t = {
     catReality: 'Reality',
     catTopRated: 'Melhores Avaliados',
     catViews: 'Mais acessados',
+    termsAgre: 'Concordar e continuar',
+    updateAgre: 'Acessar site e atualizar agora',
     
     listVizer: 'Lista principal',
     listCinemao: 'Lista opcional 720p',
@@ -3217,6 +3282,8 @@ const t = {
     retry: 'Repetir',
     contact: 'Contate-nos',
 
+    titleWelcome: 'Seja bem-vindo ao 9max',
+    titleUpdate: 'Uma nova atualização está disponível',
     titleUtils: 'Dicas úteis',
     titleShare: 'Compartilhe esse projeto',
     titleErro: 'Erros no aplicativo',
@@ -3266,11 +3333,16 @@ const t = {
     messageOfflinePlayer: 'Parece que o ocorreu um erro inesperado durante essa solicitação, tente novamente mais tarde.',
     messageOfflinePlayerOptions: 'Parece que o vídeo que você esta tentando assistir ainda não foi adicionado ou ocorreu um error com o servidor, tente novamente em alguns minutos.',
     messageNoProgams: 'Temporariamente offline',
-    messageResolveDns: `Erros no aplicativo são incomuns, então provavelmente se isso está acontecendo constantemente esssas são uma das provaveis causas:<br><br> 1 - <b>Sua operadora de internet está bloqueando o acesso ao conteudo do aplicativo.</b><br><br> 2 - <b>Os sites que ofereçem os conteudos estão temporariamente offline.</b><br><br><br>Os erros de bloqueio de operadora são os mais comuns, para resolver esse tipo de erro recomendamos o uso do app <b>DNS Changer</b>, esse é um aplicativo que permite a alteração do dns da sua operadora possibilitando assim o desbloqueio de todo o conteudo do 9MAX.<br>Veja vídeos de como configurar e usar o DNS changer <a href="javascript:if(window.wv) window.wv.openLink('https://youtube.com/results?search_query=dns+changer'); else window.open('https://youtube.com/results?search_query=dns+changer', '_blank');">Clicando aqui</a>.<br><br>`,
+    messageResolveDns: `Erros no aplicativo são incomuns, então provavelmente se isso está acontecendo constantemente esssas são uma das provaveis causas:<br><br> 1 - <b>Sua operadora de internet está bloqueando o acesso ao conteudo do aplicativo.</b><br><br> 2 - <b>Os sites que ofereçem os conteudos estão temporariamente offline.</b><br><br><br>Os erros de bloqueio de operadora são os mais comuns, para resolver esse tipo de erro recomendamos o uso do app <b>DNS Changer</b>, esse é um aplicativo que permite a alteração do dns da sua operadora possibilitando assim o desbloqueio de todo o conteudo do 9MAX.<br>Veja vídeos de como configurar e usar o DNS changer <a href="javascript: if(window.wv) window.wv.openLink('https://youtube.com/results?search_query=dns+changer'); else window.open('https://youtube.com/results?search_query=dns+changer', '_blank');">Clicando aqui</a>.<br><br>`,
     messageErrorTrailer: 'Trailer indisponível para assistir no momento.',
     messageErrorLang: 'Ocorreu um erro inesperado, tente novamente.',
     messageErrorEpisodes: 'Ocorreu um erro ao carregar os episódios dessa temporada, tente novamente.',
-    messageErrorSeasons: 'Ocorreu um erro ao carregar as temporadas dessa série, tente novamente.'
+    messageErrorSeasons: 'Ocorreu um erro ao carregar as temporadas dessa série, tente novamente.',
+    messageUpdate: 'Baixe e instale nossa nova versão do <b>9max</b> para ter acesso aos benefícios',
+    messageTerms: 'Antes de continuar leia com atenção abaixo nossos termos e condições para o uso do aplicativo.',
+    messageTermsOne: '<span>Ao <b>Continuar</b> você concorda que todo o conteúdo encontrado nesse aplicativo vem de sites terceiros espalhados pela internet como megafilmeshd, cinemao, topflix e outros.</span>',
+    messageTermsTwo: '<span>Ao <b>Continuar</b> você concorda que não somos responsáveis ​​nem administramos nada encontrado aqui e nem garantimos a funcionalidade dos conteúdos encontrados aqui.</span>',
+    messageTermsTree: `<span>Ao <b>Continuar</b> você confirma que leu e está de acordo com nossa <a href="javascript:if(window.wv) window.wv.openLink('https://9max.wap.sh/policy.html'); else window.open('https://9max.wap.sh/policy.html', '_blank');" style="pointer-events: all;">Política de privacidade</a> e nossos <a href="javascript:if(window.wv) window.wv.openLink('https://9max.wap.sh/terms.html'); else window.open('https://9max.wap.sh/terms.html', '_blank');" style="pointer-events: all;">Termos de uso</a>.</span>`
 }
 const d = {
     itemDetails: {
@@ -5960,6 +6032,58 @@ const d = {
             }
         }
     ],
+    termsButtonList: [
+        {
+            class: 'btn medium',
+            text: t.messageTermsOne,
+            imgSettings: {
+                leftImg: i.checkBox,
+                leftClass: ''
+            }
+        },
+        {
+            class: 'btn medium',
+            text: t.messageTermsTwo,
+            imgSettings: {
+                leftImg: i.checkBox,
+                leftClass: ''
+            }
+        },
+        {
+            class: 'btn medium',
+            text: t.messageTermsTree,
+            imgSettings: {
+                leftImg: i.checkBox,
+                leftClass: ''
+            }
+        }
+    ],
+    updateButtonList: [
+        {
+            class: 'btn medium',
+            text: 'Melhorias no desempenho do app',
+            imgSettings: {
+                rightImg: i.checkBox,
+                rightClass: ''
+            }
+        },
+        {
+            class: 'btn medium',
+            text: 'Correção de bugs no app',
+            imgSettings: {
+                rightImg: i.checkBox,
+                rightClass: ''
+            }
+        },
+        {
+            class: 'btn medium',
+            text: 'Atualização no catalogo do app',
+            imgSettings: {
+                rightImg: i.checkBox,
+                rightClass: ''
+            }
+        }
+    ],
     playerButtonList: [
         {
             class: 'btn medium bg-white round ripple',
@@ -6372,12 +6496,14 @@ const d = {
         searchStore: [],
         lastViewedStore: [],
         itemStore: [],
+        userSettingsStore: [],
 
         myList: () => d.userDB.myListStore.getList,
         topRatedList: () => d.userDB.topRatedStore.getList,
         searchList: () => d.userDB.searchStore.getList,
         lastViewedList: () => d.userDB.lastViewedStore.getList,
         itemList: () => d.userDB.itemStore.getList,
+        userSettings: () => d.userDB.userSettingsStore.getList,
 
         getList: (type, defaultList) => {
             try {
@@ -6398,7 +6524,8 @@ const d = {
                 case v.storeItem:
                 case v.storeMyList:
                 case v.storeSearch:
-                case v.storeTopRated: return true;
+                case v.storeTopRated:
+                case v.storeUserSettings: return true;
                 default: return false;
             }
         },
@@ -6408,6 +6535,26 @@ const d = {
             d.userDB.searchStore = await new StorageData(v.storeSearch, false, 20);
             d.userDB.lastViewedStore = await new StorageData(v.storeLastViewed, false);
             d.userDB.itemStore = await new StorageData(v.storeItem, false, 20);
+            d.userDB.userSettingsStore = await new StorageData(v.storeUserSettings, true, 1);
+        },
+        userSettingsInit: () => {
+            const isUpdate = !(parseInt(document.title ?? '0') >= 1);
+            const isExist =  objCheck(d.userDB.userSettings());
+            const dialogData = JSON.stringify({
+                params: `lang=${v.lang}&tagPage=${v.tagPage}&dialogType=${isUpdate ? v.dialogShowUpdate : v.dialogShowIntro}`,
+                bgColor: `#000000`,
+                backStack: false
+            });
+
+            if(isUpdate && v.tagPage !== v.dialogPage) {
+                if(window.wv) window.wv.openDialog(dialogData, false);
+                else pageBroadcast.postMessage({ action: v.broadcastOpenDialog, dialogData: dialogData });
+            }
+            else if(!isExist && v.tagPage !== v.dialogPage) {
+                if(window.wv) window.wv.openDialog(dialogData, false);
+                else pageBroadcast.postMessage({ action: v.broadcastOpenDialog, dialogData: dialogData });
+            }
+            return v.tagPage === v.dialogPage || isUpdate || isExist;
         }
     },
     genres: [
@@ -6487,7 +6634,26 @@ const d = {
             id: 37,
             name: "<b>Faroeste</b>"
         }
-    ]
+    ],
+    adStatus: {
+        ready: "0",
+        fail: "1",
+        open: "2",
+        close: "3",
+        showFail: "4",
+        clicked: "5",
+        success: "6"
+    },
+    createUser: () => {
+        return {
+            itemId: 'user-9max',
+            userUUID: (window.wv) ? window.wv.createUUID() :  (new Date().getTime()).toString(36),
+            userLang: getParam('lang') ?? 'pt',
+            userPremium: false,
+            userErrorDNS: false,
+            userRegistred: false
+        }
+    }
 }
 const pageBroadcast = new AllInclusiveBroadcaster((data) => {
     switch(data.action) {
@@ -6720,6 +6886,41 @@ const promiseAllList = (object, val = '') => {
         return await data.setItemList(index, val);
     }));
 }
+const adsRun = (onRetun) => {
+    const key = `asyncAds_0`;
+    const adFirst = !valCheck(localStorage.getItem('adFirst'));
+    let adFinalStatus = '0';
+    let adRetry = 0;
+    const expire = setInterval(() => {
+        console.log('Ads final status: ' + adFinalStatus);
+        if(adRetry >= 1) {
+            window[key].resolve(d.adStatus.success);
+            clearInterval(expire);
+        }
+        else if(adFinalStatus === '6') clearInterval(expire);
+        else window[key].run(key, 'ca-app-pub-3940256099942544/1033173712x', 1);
+
+        adRetry++;
+    }, 15000);
+
+    window[key] = {
+        resolve: (adStatus) => {
+            adFinalStatus = adStatus;
+            onRetun(adStatus);
+        },
+        run: (key, id, type) => {
+            if(window.wv) window.wv.runAsyncAds(key, id, type);
+            else window[key].resolve(d.adStatus.success);
+        }
+    };
+
+    if(adFirst) {
+        window[key].resolve(d.adStatus.success);
+        localStorage.setItem('adFirst', 'false');
+    }
+    else setTimeout(() => window[key].run(key, 'e2f22299x', 0), 1000);
+
+}
 const promiseFetch = async(data) => {
     const itemRequestSettings = data.itemRequestSettings;
     const key = `asyncExternal_${encodeString(itemRequestSettings.url + itemRequestSettings.params)}`;
@@ -6777,6 +6978,7 @@ async function init() {
             else myListElem.removeClass('hide');
         }
     }
+    d.userDB.userSettingsStore.onChange = () => initPage(v.tagPage);
     documentElem.on('click', async function(event){
         const clickedElem = $(event.target);
         const actionType = parseInt(clickedElem.attr('data-action') ?? '-1');
@@ -7145,9 +7347,10 @@ async function init() {
                 const detailsElem = getViewByAttr(clickedElem, '[data-details]');
                 const itemEncodedData = detailsElem.attr('data-details') ?? {};
                 
-                if(v.tagPage === v.detailsPage) window.location.href = v.baseUrl + '/pageDetails.html?data=' + itemEncodedData;
+                if(v.tagPage === v.searchPage) d.userDB.itemStore.replaceItemData(detailsElem.attr('data-details'));
+                if(v.tagPage === v.detailsPage) window.location.href = './pageDetails.html?data=' + itemEncodedData;
                 else if(window.wv) window.wv.openDetails(itemEncodedData);
-                else window.open(v.baseUrl + '/pageDetails.html?data=' + itemEncodedData, '_blank');
+                else window.open('./pageDetails.html?data=' + itemEncodedData, '_blank');
                 break;
             }
             case v.actionPlayTrailer: {
@@ -7263,6 +7466,14 @@ async function init() {
                 d.userDB.myListStore.removeItemData(itemId);
                 break;
             }
+            case v.actionRegisterUser: {
+                const pageTag = getParam('tagPage') ?? v.tagPage;
+
+                d.userDB.userSettingsStore.replaceItemData(d.createUser());
+                if(window.wv) window.wv.finishActivity();
+                else new AllInclusiveBroadcaster(() => {}, pageTag).postMessage({ action: v.broadcastCloseDialog });
+                break;
+            }
         }
     });
     document.addEventListener('scroll', function (event) {
@@ -7326,121 +7537,142 @@ async function initPage(type) {
     changeAppToolBarColor('actionBarLayout', '#00000000');
     if(!containerElem.find('.content.progress')[0]) containerElem.changeHtml(v.cardProgress, v.progressPage, () => changeAppToolBarColor('actionBarLayout', '#00000000'));
     
-    switch(type) {
-        case v.homePage:
-        case v.moviesPage:
-        case v.seriesPage: {
-            promiseAllList(d.pageList[v.defaultId])
-            .then(data => containerElem.changeHtml(v.cardHomeContent, data))
-            .catch(err => console.log('aborted'));
-            break;
-        }
-        case v.searchPage: {
-            promiseAllList(d.pageList)
-            .then(data => searchContainerElem.changeHtml(v.cardSearchContent, data))
-            .catch(err => console.log('aborted'));
-            break;
-        }
-        case v.tvPage: {
-            promiseAllList(d.pageList)
-            .then(data => containerElem.changeHtml(v.cardTvContent, data, () => observerGuideChannel()))
-            .catch(err => console.log('aborted'));
-            break;
-        }
-        case v.dialogPage: {
-            switch(parseInt(getParam('dialogType') ?? '-1')) {
-                case v.dialogShowCategories: {
-                    containerElem.changeHtml(v.cardCategoriesContent, { catType: getParam('catType'), catActive: getParam('catActive') });
+    if(d.userDB.userSettingsInit()) {
+        try {
+            switch(type) {
+                case v.homePage:
+                case v.moviesPage:
+                case v.seriesPage: {
+                    promiseAllList(d.pageList[v.defaultId])
+                    .then(data => containerElem.changeHtml(v.cardHomeContent, data))
+                    .catch(err => console.log('aborted'));
                     break;
                 }
-                case v.dialogShowColletion: {
-                    const itemDecodeData = (parseJSON(getParam('data') ?? 'e30=') ?? {});
-                    const bottomSheetTitle = t.colletion + ' ' + itemDecodeData.itemTitle;
-                    
-                    containerElem.changeHtml(v.cardBottomSheetContent, {
-                        itemTitle: bottomSheetTitle,
-                        content: requestHtml(v.cardProgress, v.progressBar)
-                    }, () => {
-                        $('.item-bottomsheet')
-                        .delay(100)
-                        .queue(function() {
-                            $(this).addClass('active');
-                            setTimeout(() => {
-                                if(window.wv) window.wv.changeNavigationBarColor(rgba2hex($(this).css('background-color')));
-                                promiseAllList([itemDecodeData])
-                                .then(data => $(this).find('#list').changeHtml(v.titleList, data))
-                                .catch(err => console.log('aborted'));
-                            }, 100);
-                            $(this).dequeue();
-                        });
-                    });
+                case v.searchPage: {
+                    promiseAllList(d.pageList)
+                    .then(data => searchContainerElem.changeHtml(v.cardSearchContent, data))
+                    .catch(err => console.log('aborted'));
                     break;
                 }
-                case v.dialogShowPlayerOptions: {
-                    const itemDecodeData = (parseJSON(getParam('data') ?? 'e30=') ?? {});
-                    const bottomSheetTitle = t.options + ' ' + itemDecodeData.playerTitle.toLowerCase();
-                    const playerType = itemDecodeData.playerType ?? v.playerVizer;
-                    const playerServers = itemDecodeData.playerServers ?? [];
-                    const playerVisibility = itemDecodeData.playerVisibility ?? 'all';
-                    
-                    containerElem.changeHtml(v.cardBottomSheetContent, {
-                        itemTitle: bottomSheetTitle,
-                        content: requestHtml(v.cardProgress, v.progressBar)
-                    }, () => {
-                        $('.item-bottomsheet')
-                        .delay(100)
-                        .queue(function() {
-                            $(this).addClass('active');
-                            setTimeout(() => {
-                                if(window.wv) window.wv.changeNavigationBarColor(rgba2hex($(this).css('background-color')));
-                                $(this).find('#list').changeHtml(v.cardPlayer, { playerType: playerType, playerServers: playerServers });
-                            }, 100);
-                            $(this).dequeue();
-                        });
-                    });
-                    bodyElem.append(`<style>
-                        ${playerVisibility === 'play' ? '.player-options > button:not(:first-child)' : playerVisibility === 'down' ? '.player-options > button:not(:last-child)' : playerVisibility === 'cast' ? '.player-options > button:last-of-type, .player-options > button:first-of-type' : playerVisibility === 'cast, play' ? '.player-options > button:last-of-type' : ''} {
-                            display: none;
+                case v.tvPage: {
+                    promiseAllList(d.pageList)
+                    .then(data => containerElem.changeHtml(v.cardTvContent, data, () => observerGuideChannel()))
+                    .catch(err => console.log('aborted'));
+                    break;
+                }
+                case v.dialogPage: {
+                    switch(parseInt(getParam('dialogType') ?? '-1')) {
+                        case v.dialogShowCategories: {
+                            containerElem.changeHtml(v.cardCategoriesContent, { catType: getParam('catType'), catActive: getParam('catActive') });
+                            break;
                         }
-                    </style>`);
+                        case v.dialogShowColletion: {
+                            const itemDecodeData = (parseJSON(getParam('data') ?? 'e30=') ?? {});
+                            const bottomSheetTitle = t.colletion + ' ' + itemDecodeData.itemTitle;
+                            
+                            containerElem.changeHtml(v.cardBottomSheetContent, {
+                                itemTitle: bottomSheetTitle,
+                                content: requestHtml(v.cardProgress, v.progressBar)
+                            }, () => {
+                                $('.item-bottomsheet')
+                                .delay(100)
+                                .queue(function() {
+                                    $(this).addClass('active');
+                                    setTimeout(() => {
+                                        if(window.wv) window.wv.changeNavigationBarColor(rgba2hex($(this).css('background-color')));
+                                        promiseAllList([itemDecodeData])
+                                        .then(data => $(this).find('#list').changeHtml(v.titleList, data))
+                                        .catch(err => console.log('aborted'));
+                                    }, 100);
+                                    $(this).dequeue();
+                                });
+                            });
+                            break;
+                        }
+                        case v.dialogShowPlayerOptions: {
+                            const itemDecodeData = (parseJSON(getParam('data') ?? 'e30=') ?? {});
+                            const bottomSheetTitle = t.options + ' ' + itemDecodeData.playerTitle.toLowerCase();
+                            const playerType = itemDecodeData.playerType ?? v.playerVizer;
+                            const playerServers = itemDecodeData.playerServers ?? [];
+                            const playerVisibility = itemDecodeData.playerVisibility ?? 'all';
+                            containerElem.changeHtml(v.cardBottomSheetContent, {
+                                itemTitle: bottomSheetTitle,
+                                content: requestHtml(v.cardProgress, v.progressBar)
+                            }, () => {
+                                $('.item-bottomsheet')
+                                .delay(100)
+                                .queue(function() {
+                                    $(this).addClass('active');
+                                    setTimeout(() => {
+                                        const init = () => {
+                                            $(this).find('#list').changeHtml(v.cardPlayer, { playerType: playerType, playerServers: playerServers });
+                                        }
+        
+                                        if(window.wv) window.wv.changeNavigationBarColor(rgba2hex($(this).css('background-color')));
+                                        adsRun((adStatus) => {
+                                            console.log('Ads status: ' + adStatus);
+                                            if(adStatus === '6') init();
+                                        });
+                                    }, 100);
+                                    $(this).dequeue();
+                                });
+                            });
+                            bodyElem.append(`<style>
+                                ${playerVisibility === 'play' ? '.player-options > button:not(:first-child)' : playerVisibility === 'down' ? '.player-options > button:not(:last-child)' : playerVisibility === 'cast' ? '.player-options > button:last-of-type, .player-options > button:first-of-type' : playerVisibility === 'cast, play' ? '.player-options > button:last-of-type' : ''} {
+                                    display: none;
+                                }
+                            </style>`);
+                            break;
+                        }
+                        case v.dialogShowAlert: {
+                            const itemDecodeData = (parseJSON(getParam('data') ?? 'e30=') ?? {});
+                            const title = itemDecodeData.title;
+                            const contentType = itemDecodeData.contentType;
+        
+                            containerElem.changeHtml(v.cardBottomSheetContent, {
+                                itemTitle: title,
+                                content: requestHtml(v.cardProgress, v.progressBar)
+                            }, () => {
+                                $('.item-bottomsheet')
+                                .delay(100)
+                                .queue(function() {
+                                    $(this).addClass('active');
+                                    setTimeout(() => {
+                                        if(window.wv) window.wv.changeNavigationBarColor(rgba2hex($(this).css('background-color')));
+                                        $(this).find('#list').changeHtml(v.cardAlert, { type: contentType });
+                                    }, 100);
+                                    $(this).dequeue();
+                                });
+                            });
+                            break;
+                        }
+                        case v.dialogShowIntro: {
+                            containerElem.changeHtml(v.cardAlert, { type: v.errorInUserRegister });
+                            break;
+                        }
+                        case v.dialogShowUpdate: {
+                            containerElem.changeHtml(v.cardAlert, { type: v.errorInUpdate });
+                            break;
+                        }
+                    }
                     break;
                 }
-                case v.dialogShowAlert: {
-                    const itemDecodeData = (parseJSON(getParam('data') ?? 'e30=') ?? {});
-                    const title = itemDecodeData.title;
-                    const contentType = itemDecodeData.contentType;
-
-                    containerElem.changeHtml(v.cardBottomSheetContent, {
-                        itemTitle: title,
-                        content: requestHtml(v.cardProgress, v.progressBar)
-                    }, () => {
-                        $('.item-bottomsheet')
-                        .delay(100)
-                        .queue(function() {
-                            $(this).addClass('active');
-                            setTimeout(() => {
-                                if(window.wv) window.wv.changeNavigationBarColor(rgba2hex($(this).css('background-color')));
-                                $(this).find('#list').changeHtml(v.cardAlert, { type: contentType });
-                            }, 100);
-                            $(this).dequeue();
-                        });
-                    });
+                case v.errorPage: {
+                    containerElem.changeHtml(v.cardAlert, { type: v.errorInEmbed }, () => show());
                     break;
                 }
+                case v.detailsPage: {            
+                    d.pageList.init()
+                    .then(data => containerElem.changeHtml(v.cardDetailsContent, data))
+                    .catch(err => console.log(err));
+                    break;
+                }
+                default: {}
             }
-            break;
         }
-        case v.errorPage: {
-            containerElem.changeHtml(v.cardAlert, { type: v.errorInEmbed }, () => show());
-            break;
+        catch(err) {
+            containerElem.changeHtml(v.cardAlert, { type: v.errorInContainer });
         }
-        case v.detailsPage: {            
-            d.pageList.init()
-            .then(data => containerElem.changeHtml(v.cardDetailsContent, data))
-            .catch(err => console.log(err));
-            break;
-        }
-        default: {}
     }
 }
 function lazyObserver(elem) {
@@ -7777,7 +8009,6 @@ function convertElementToJson(convertType, font, content) {
         case v.convertList: {
             switch(font) {
                 case v.fontMySite: {
-                    if(isObject(content)) return JSON.parse(content);
                     try {
                         const elem = $(content);
                         elem.find('div').each(function(index, elem) {
@@ -7806,7 +8037,7 @@ function convertElementToJson(convertType, font, content) {
                             item.order = index;
                             list.push(item);
                         });
-                    } catch(err) { console.log(err); }
+                    } catch(err) {console.log(err);}
                     break;
                 }
                 case v.fontVizerJs: {
@@ -7843,7 +8074,7 @@ function convertElementToJson(convertType, font, content) {
                             
                             list.push(item);
                         });
-                    } catch(err) { console.log(err); }
+                    } catch(err) {console.log(err);}
                     break;
                 }
                 case v.fontVizerSite: {
@@ -7880,7 +8111,7 @@ function convertElementToJson(convertType, font, content) {
                             
                             list.push(item);
                         });
-                    } catch(err) { console.log(err); }
+                    } catch(err) {console.log(err);}
                     break;
                 }
                 case v.fontFlixeiSite: {
@@ -7918,7 +8149,7 @@ function convertElementToJson(convertType, font, content) {
                             
                             list.push(item);
                         });
-                    } catch(err) { console.log(err); }
+                    } catch(err) {console.log(err);}
                     break;
                 }
                 case v.fontCinemaoSite: {
@@ -7956,7 +8187,7 @@ function convertElementToJson(convertType, font, content) {
                                 list.push(item);
                             }
                         });
-                    } catch(err) { console.log(err); }
+                    } catch(err) {console.log(err);}
                     break;
                 }
                 case v.fontMeuGuia: {
@@ -7978,11 +8209,11 @@ function convertElementToJson(convertType, font, content) {
                             }
                         });
 
-                    } catch(err) { console.log(err); }
+                    } catch(err) {console.log(err);}
                 }
                 default: return (objCheck(list)) ? { itemList: list, pagination: pagination } : null;
             }
-            return (objCheck(list)) ? { itemList: list, pagination: pagination } : null;
+            return (objCheck(list)) ? { itemList: list.sort((a, b) => a.order - b.order).map(({order, ...rest}) => rest), pagination: pagination } : null;
         }
         case v.convertDetails: {
             switch(font) {
@@ -8014,7 +8245,7 @@ function convertElementToJson(convertType, font, content) {
                             });
                             return { playerServers: list };
                         }
-                    } catch (err) {}
+                    } catch (err) {console.log(err);}
                     return null;
                 }
                 case v.fontVizerJs: {
@@ -8031,7 +8262,7 @@ function convertElementToJson(convertType, font, content) {
                             });
 
                             return list;
-                    } catch(err) {}
+                    } catch(err) {console.log(err);}
                     return null;
                 }
                 case v.fontCinemaoSite: {
@@ -8047,14 +8278,14 @@ function convertElementToJson(convertType, font, content) {
 
                         list.push(item);
                         return { playerServers: list };
-                    } catch (err) {}
+                    } catch (err) {console.log(err);}
                     return null;
 
                 }
                 case v.fontTmdbTrailerJs: {
                     try {
                         return { itemTmdbTrailer: ((JSON.parse(content)).results[0] ?? {})?.key ?? '' };
-                    } catch (err) {}
+                    } catch (err) {console.log(err);}
                     return null;
                 }
                 case v.fontTmdbJs: {
@@ -8064,7 +8295,7 @@ function convertElementToJson(convertType, font, content) {
                         json = objCheck(json) ? json : (JSON.parse(content)).results[0] ?? {};
 
                         return { itemTmdbId: json.id ?? 0, itemSinopse: json.overview ?? '', itemGeners: d.genres.filter(data => objCheck(json.genre_ids.filter(id => id === data.id))).map(data => data.name) ?? [] };
-                    } catch (err) {}
+                    } catch (err) {console.log(err);}
                     return null;
                 }
             }
@@ -8076,7 +8307,7 @@ function convertElementToJson(convertType, font, content) {
                     try {
                         const json = JSON.parse(content) ?? {};
                         return json.mixdrop ? 'mixdrop' : json.streamtape ? 'streamtape' : '';
-                    } catch(err) {}
+                    } catch(err) {console.log(err);}
                     return null;
                 }
             }
@@ -8114,7 +8345,7 @@ function convertElementToJson(convertType, font, content) {
                             list.push(item);
                         });
                         return list;
-                    } catch(err) { console.log(err); }
+                    } catch(err) {console.log(err);}
                     return null;
                 }
             }
