@@ -3139,7 +3139,7 @@ const i = {
     live: "./img/live.png",
     timeBlack: "./img/timeBlack.png",
     youtube: "./img/youtube.png",
-    checkBox: "https://img.icons8.com/ios-filled/100/ffffff/checked-checkbox.png",
+    checkBox: "./img/checked.png",
 
     ch_sbt: "./img/sbt.png",
     ch_globo: "./img/globo.png",
