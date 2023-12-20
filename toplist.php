@@ -1,3 +1,12 @@
+<?php
+header('User-Agent: ');
+header('Host: ');
+header('Referer: ');
+header("Referrer-Policy: no-referrer");
+header("Content-Type: application/json");
+header('Access-Control-Allow-Origin: *');
+header("Access-Control-Allow-Methods: GET,POST,OPTIONS,DELETE,PUT");
+?>
 <!DOCTYPE html>
 <html>
     <head>  
@@ -15,7 +24,7 @@
             5
             <div data-itemid="minha-vida-com-a-familia-walter" data-itemcardtype="null" data-itemtype="serie" data-itemtitle="Minha Vida com a Família Walter" data-itemposter="https://vizer.tv/content/series/posterPt/185/22553.webp" data-itemposterbackground="https://vizer.tv/content/series/background/1280/22553.jpg" data-itemdetails="eyJpdGVtVHlwZSI6InZpemVyLXNlcmllIiwiaXRlbUlkIjoiMjI1NTMiLCJpdGVtTmFtZSI6Im1pbmhhIHZpZGEgY29tIGEgZmFtaWxpYSB3YWx0ZXIiLCJpdGVtWWVhciI6IjIwMjMifQ==" data-itemyear="2023" data-itemrate="4.9"></div>
             6
-            <div data-itemid="five-nights-at-freddys-o-pesadelo-sem-fim" data-itemcardtype="null" data-itemtype="movie" data-itemtitle="Five Nights at Freddy's - O Pesadelo Sem Fim" data-itemposter="https://vizer.tv/content/movies/posterPt/185/40128.webp" data-itemposterbackground="https://vizer.tv/content/movies/background/1280/40128.jpg" data-itemdetails="eyJpdGVtVHlwZSI6InZpemVyLW1vdmllIiwiaXRlbUlkIjoiNDAxMjgiLCJpdGVtTmFtZSI6ImZpdmUgbmlnaHRzIGF0IGZyZWRkeXMgbyBwZXNhZGVsbyBzZW0gZmltIiwiaXRlbVllYXIiOiIyMDIzIn0=" data-itemyear="2023" data-itemrate="5.5"></div>
+            <div data-itemid="five-nights-at-freddys-o-pesadelo-sem-fim" data-itemcardtype="null" data-itemtype="movie" data-itemtitle="Five Nights at Freddys - O Pesadelo Sem Fim" data-itemposter="https://vizer.tv/content/movies/posterPt/185/40128.webp" data-itemposterbackground="https://vizer.tv/content/movies/background/1280/40128.jpg" data-itemdetails="eyJpdGVtVHlwZSI6InZpemVyLW1vdmllIiwiaXRlbUlkIjoiNDAxMjgiLCJpdGVtTmFtZSI6ImZpdmUgbmlnaHRzIGF0IGZyZWRkeXMgbyBwZXNhZGVsbyBzZW0gZmltIiwiaXRlbVllYXIiOiIyMDIzIn0=" data-itemyear="2023" data-itemrate="5.5"></div>
             7
             <div data-itemid="jogos-vorazes-a-cantiga-dos-passaros-e-das-serpentes" data-itemcardtype="null" data-itemtype="movie" data-itemtitle="Jogos Vorazes: A Cantiga dos Pássaros e das Serpentes" data-itemposter="https://vizer.tv/content/movies/posterPt/185/40048.webp" data-itemposterbackground="https://vizer.tv/content/movies/background/1280/40048.jpg" data-itemdetails="eyJpdGVtVHlwZSI6InZpemVyLW1vdmllIiwiaXRlbUlkIjoiNDAwNDgiLCJpdGVtTmFtZSI6ImpvZ29zIHZvcmF6ZXMgYSBjYW50aWdhIGRvcyBwYXNzYXJvcyBlIGRhcyBzZXJwZW50ZXMiLCJpdGVtWWVhciI6IjIwMjMifQ==" data-itemyear="2023" data-itemrate="7.2"></div>
             8
