@@ -1,6 +1,6 @@
 injectSuccess = true;
-const injectScript = document.createElement('script');
-const injectGetParam = (name, url) => {
+const injectChildScript = document.createElement('script');
+const injectChildGetParam = (name, url) => {
     if (!url) url = window.location.href;
     name = name.replace(/[\[\]]/g, '\\$&');
     var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
@@ -9,7 +9,7 @@ const injectGetParam = (name, url) => {
     if (!results[2]) return null;
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
-const injectDomainServers = [
+const injectChildDomainServers = [
     {
         domain: ['file:', '192', 'vizer'],
         fun: () => {}
@@ -17,7 +17,7 @@ const injectDomainServers = [
     {
         domain: ['futemax'],
         fun: () => {
-            injectValidater('#player', () => {
+            injectChildValidater('#player', () => {
                 $('body').append(`<style>
                     #player {
                         display: flex !important;
@@ -55,7 +55,7 @@ const injectDomainServers = [
                         width: auto !important;
                     }
                 </style>`).ready(function() {
-                    injectShower();
+                    injectChildShower();
                 });;
             });
         }
@@ -81,7 +81,7 @@ const injectDomainServers = [
                     scrollTop: (jQuery('#content').offset().top)
                 },500);
             }
-            injectValidater('.Player', () => {
+            injectChildValidater('.Player', () => {
                 $('.article-content').children().not('.Player, .links').remove();
                 $('body').append(`<style>
                     .article-content {
@@ -125,7 +125,7 @@ const injectDomainServers = [
                         height: 100% !important;
                     }
                 </style>`).ready(function() {
-                    injectShower();
+                    injectChildShower();
                     run($('.links a:first-of-type')[0]);
                     ;
                 });
@@ -135,7 +135,7 @@ const injectDomainServers = [
     {
         domain: ['warezcdn'],
         fun: () => {
-            injectValidater('.hostList', () => {
+            injectChildValidater('.hostList', () => {
                 $('.hostList').removeClass('hostList').addClass('hostLister');
                 $('[data-load-embed]').each(function() {
                     $(this).attr('data-load-embeds', $(this).attr('data-load-embed'));
@@ -214,7 +214,7 @@ const injectDomainServers = [
                         $(".Player").html(getIframe(url));
                     });
                     $('[data-load-embeds]:first-of-type').trigger('click');
-                    injectShower();
+                    injectChildShower();
                 });
             });
         }
@@ -222,7 +222,7 @@ const injectDomainServers = [
     {
         domain: ['playerhd'],
         fun: () => {
-            injectValidater('.geral', () => {
+            injectChildValidater('.geral', () => {
                 $('.geral').prepend(`<style>
                     .geral {
                         display: flex !important;
@@ -262,39 +262,39 @@ const injectDomainServers = [
                 <div class="Player"></div>`).ready(function() {
                     eval($('[onclick="select(7)"]').attr('onclick') ?? $('[onclick="select(8)"]').attr('onclick'));
                     $('.down, .footer, .title').remove();
-                    injectShower();
+                    injectChildShower();
                 });
             });
         }
     },
     {
         domain: ['all'],
-        fun: () => injectShower()
+        fun: () => injectChildShower()
     }
 ];
-injectScript.src = window.location.protocol.replace('file:', 'https:') + '//code.jquery.com/jquery-3.7.1.min.js';
-injectScript.addEventListener('load', init);
-document.head.appendChild(injectScript);
+injectChildScript.src = window.location.protocol.replace('file:', 'https:') + '//code.jquery.com/jquery-3.7.1.min.js';
+injectChildScript.addEventListener('load', init);
+document.head.appendChild(injectChildScript);
 
-function injectInit() {
+function injectChildInit() {
     try {
-        const data = injectDomainServers.filter(({ domain }) => domain.some(el => (window.location.origin ?? window.location.href).includes(el)))[0];
+        const data = injectChildDomainServers.filter(({ domain }) => domain.some(el => (window.location.origin ?? window.location.href).includes(el)))[0];
 
-        if(injectObjCheck(data)) data.fun();
-        else injectDomainServers[injectDomainServers.length-1].fun();
+        if(injectChildObjCheck(data)) data.fun();
+        else injectChildDomainServers[injectChildDomainServers.length-1].fun();
         console.log('success');
     } catch (err) {
         if(window.wv) window.wv.loadErrorLink(window.location.href); 
         console.log('failed');
     }
 }
-function injectObjCheck(obj) {
+function injectChildObjCheck(obj) {
     try {
         return Object.keys(obj).length !== 0;
     }catch (err) {}
     return false;
 }
-function injectValidater(attr, onReturn) {
+function injectChildValidater(attr, onReturn) {
     if($(attr)[0]) {
         console.log('success');
         onReturn();
@@ -303,14 +303,14 @@ function injectValidater(attr, onReturn) {
         if(window.wv) window.wv.loadErrorLink(window.location.href); 
     }
 }
-function injectShower() {
+function injectChildShower() {
     if(window.wv) window.wv.show();
 }
 function select(button){
     $.ajax({
         url:'https://playerhd.org/video/geradorteste.php',
         type: 'POST',
-        data:{button:button,id:injectGetParam('id'),season:"none",episode:"none"},
+        data:{button:button,id:injectChildGetParam('id'),season:"none",episode:"none"},
         success: function(data){
             $('.Player').html('<iframe src="'+data+'" oncontextmenu="return false;" width="100%" height="100%" scrolling="no" frameborder="0" allowfullscreen="true"></iframe>');
            
