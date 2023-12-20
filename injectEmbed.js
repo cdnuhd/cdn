@@ -273,7 +273,7 @@ const injectChildDomainServers = [
     }
 ];
 injectChildScript.src = window.location.protocol.replace('file:', 'https:') + '//code.jquery.com/jquery-3.7.1.min.js';
-injectChildScript.addEventListener('load', init);
+injectChildScript.addEventListener('load', injectChildInit);
 document.head.appendChild(injectChildScript);
 
 function injectChildInit() {
