@@ -22,13 +22,13 @@ const requestHtml = (type = -1, data) => {
     switch(type) {
         case v.cardTitleList: {
             const itemEncodedData = btoa(encodeURIComponent(JSON.stringify(omit(data, 'itemList'))));
-            const itemTitle = data.itemTitle ?? '';
+            const itemTitle = decodeURIFormat(data.itemTitle ?? '')
             const itemDesc = data.itemDesc ?? '';
             const itemId = data.itemId ?? '';
             const itemScrollType = data.itemScrollType ?? v.horizontalScrollerElem;
             const itemScrollAlert = data.itemScrollAlert ?? v.errorInEmpty;
             
-            const itemMylistHide = (itemScrollAlert === v.errorInEmpty && !objCheck(data.itemList ?? [])) ? ' hide' : '';
+            const itemMylistHide = (itemScrollAlert === v.errorInEmpty && !injectObjCheck(data.itemList ?? [])) ? ' hide' : '';
             const itemTitleAreaHide = (itemTitle === '' && itemDesc === '') ? 'hide' : '';
             
             return `<div class="card-item-content${itemMylistHide}" data-list-id="${itemId}" data-list-details="${itemEncodedData}">
@@ -48,7 +48,7 @@ const requestHtml = (type = -1, data) => {
             const itemEncodedData = btoa(encodeURIComponent(JSON.stringify(data)));
             const itemPosterBackground = data.itemPosterBackground ?? i.errorPoster;
             const itemType = data.itemType ?? '';
-            const itemTitle = data.itemTitle ?? '';
+            const itemTitle = decodeURIFormat(data.itemTitle ?? '');
             const itemId = data.itemId ?? '';
 
             const imgSave = d.userDB.myListStore.checkItemData(itemId) ? i.saved : i.save;
@@ -107,7 +107,7 @@ const requestHtml = (type = -1, data) => {
             const itemEncodedData = btoa(encodeURIComponent(JSON.stringify(data)));
             const itemPoster = data.itemPoster ?? i.errorPoster;
             const itemId = data.itemId ?? '';
-            const itemTitle = data.itemTitle ?? '';
+            const itemTitle = decodeURIFormat(data.itemTitle ?? '')
 
             const itemTopRated = topRatedCheck(d.userDB.topRatedList(), itemTitle);
 
@@ -127,7 +127,7 @@ const requestHtml = (type = -1, data) => {
             const itemEncodedData = btoa(encodeURIComponent(JSON.stringify(data)));
             const itemPoster = data.itemPoster ?? i.errorPoster;
             const itemId = data.itemId ?? '';
-            const itemTitle = data.itemTitle ?? '';
+            const itemTitle = decodeURIFormat(data.itemTitle ?? '')
             
             const itemTopRated = topRatedCheck(d.userDB.topRatedList(), itemTitle);
 
@@ -158,7 +158,7 @@ const requestHtml = (type = -1, data) => {
             const itemEncodedData = btoa(encodeURIComponent(JSON.stringify(data)));
             const itemPoster = data.itemPoster ?? i.errorPoster;
             const itemId = data.itemId ?? '';
-            const itemTitle = data.itemTitle ?? '';
+            const itemTitle = decodeURIFormat(data.itemTitle ?? '')
 
             const itemTopRated = topRatedCheck(d.userDB.topRatedList(), itemTitle);
             
@@ -179,7 +179,7 @@ const requestHtml = (type = -1, data) => {
             const itemEncodedData = btoa(encodeURIComponent(JSON.stringify(data)));
             const itemPosterBackground = data.itemPosterBackground ?? i.errorPoster;
             const itemId = data.itemId ?? '';
-            const itemTitle = data.itemTitle ?? '';
+            const itemTitle = decodeURIFormat(data.itemTitle ?? '');
             const itemRate = data.itemRate ?? '5.0';
 
             const imgSave = d.userDB.myListStore.checkItemData(itemId) ? i.saved : i.save;
@@ -220,7 +220,7 @@ const requestHtml = (type = -1, data) => {
             const itemEncodedData = btoa(encodeURIComponent(JSON.stringify(data)));
             const itemPoster = data.itemPoster ?? i.errorPoster;
             const itemId = data.itemId ?? '';
-            const itemTitle = data.itemTitle ?? '';
+            const itemTitle = decodeURIFormat(data.itemTitle ?? '')
 
             const itemTopRated = topRatedCheck(d.userDB.topRatedList(), itemTitle);
 
@@ -238,7 +238,7 @@ const requestHtml = (type = -1, data) => {
         }
         case v.cardColletion: {
             const itemEncodedData = btoa(encodeURIComponent(JSON.stringify(data)));
-            const itemTitle = data.itemTitle ?? '';
+            const itemTitle = decodeURIFormat(data.itemTitle ?? '')
             let color = randColor();
             color = shadeColor(color, (colorModeCheck(color) === 'light' ? -70 : 0));
 
@@ -284,7 +284,7 @@ const requestHtml = (type = -1, data) => {
             try {
                 let currentDateTime = new Date();
                 let formattedTime = String(currentDateTime.getHours()).padStart(2, '0') + ":" + String(currentDateTime.getMinutes()).padStart(2, '0');
-                let resultHtml = (objCheck(data)) ? "" : `<section>
+                let resultHtml = (injectObjCheck(data)) ? "" : `<section>
                     <div class="guide-time">${formattedTime}</div>
                     <div class="guide-title-area">
                         <div class="title">${t.titleNoProgams}</div>
@@ -319,7 +319,7 @@ const requestHtml = (type = -1, data) => {
         case v.cardPlayer: {
             const playerType = data.playerType ?? v.playerTv;
             const playerServers = data.playerServers ?? [];
-            let resultHtml = (objCheck(playerServers)) ? '' : requestHtml(v.cardAlert, { type: v.errorInPlayerOptions });
+            let resultHtml = (injectObjCheck(playerServers)) ? '' : requestHtml(v.cardAlert, { type: v.errorInPlayerOptions });
 
             if(resultHtml === '') {
                 switch(playerType) {
@@ -406,7 +406,7 @@ const requestHtml = (type = -1, data) => {
                 const itemPoster = data.itemPoster ?? i.errorPoster;
                 const itemPosterBackground = data.itemPosterBackground ?? i.errorPoster;
                 const itemType = data.itemType ?? '';
-                const itemTitle = data.itemTitle ?? '';
+                const itemTitle = decodeURIFormat(data.itemTitle ?? '');
                 const itemId = data.itemId ?? '';
                 const itemSinopse = data.itemSinopse ?? '';
                 const itemTmdbTrailer = data.itemTmdbTrailer ?? '';
@@ -460,7 +460,6 @@ const requestHtml = (type = -1, data) => {
                     }
                 };
 
-                console.log(data);
                 return `<div class="content">
                     <section class="item-details" data-id="${itemId}" data-details="${itemEncodedData}">
                         <div class="item-trailer-content">
@@ -528,10 +527,10 @@ const requestHtml = (type = -1, data) => {
                 const topRatedData = data.map(({ itemId, itemList, itemCardType }) => {
                     if(itemId === 'siteTopRated') d.userDB.topRatedStore.replaceList(itemList);
                     const realTopRatedList = d.userDB.topRatedList().filter((({ itemType }) => itemType === d.itemType[Math.floor(Math.random() * d.itemType.length)])) ?? [];
-                    return (objCheck(realTopRatedList) ? realTopRatedList : itemList) ?? [];
+                    return (injectObjCheck(realTopRatedList) ? realTopRatedList : itemList) ?? [];
                 })[data.length-1] ?? [];
                
-                if(objCheck(topRatedData)) {
+                if(injectObjCheck(topRatedData)) {
                     return `<div class="content">
                         <div class="view-flags"></div>
                         ${requestHtml(v.cardPosterFull, topRatedData[Math.floor(Math.random() * topRatedData.length)])}
@@ -565,12 +564,12 @@ const requestHtml = (type = -1, data) => {
         }
         case v.cardSearchResultsContent: {
             try {
-                const resultHtml = $(`<div>${requestHtml(v.titleList, data.filter(({itemList}) => objCheck(itemList)).map(({ itemTitle, ...rest}) => rest))}</div>`);
+                const resultHtml = $(`<div>${requestHtml(v.titleList, data.filter(({itemList}) => injectObjCheck(itemList)).map(({ itemTitle, ...rest}) => rest))}</div>`);
                 const fontButtonList = data
-                .filter(({ itemList }) => objCheck(itemList))
+                .filter(({ itemList }) => injectObjCheck(itemList))
                 .map((data, index) => {
                     const activeClass = index === 0 ? ' active': '';
-                    const itemTitle = data.itemTitle ?? '';
+                    const itemTitle = decodeURIFormat(data.itemTitle ?? '')
                     const itemId = data.itemId ?? '';
 
                     return {
@@ -581,7 +580,7 @@ const requestHtml = (type = -1, data) => {
                 });
 
                 resultHtml.find('.card-item-content:first-of-type').addClass('active');
-                return objCheck(fontButtonList) ?
+                return injectObjCheck(fontButtonList) ?
                 `${requestHtml(v.horizontalScrollerElem, { class: 'anim-changes font-list', content: requestHtml(v.btnList, fontButtonList) })}
                 <div id="list">${resultHtml.html()}</div>`
                 :
@@ -591,15 +590,15 @@ const requestHtml = (type = -1, data) => {
         }
         case v.cardTvContent: {
             try {
-                const resultHtml = $(`<div>${requestHtml(v.titleList, data.filter(({itemList}) => objCheck(itemList)).map(({ itemTitle, ...rest}) => rest))}</div>`);
+                const resultHtml = $(`<div>${requestHtml(v.titleList, data.filter(({itemList}) => injectObjCheck(itemList)).map(({ itemTitle, ...rest}) => rest))}</div>`);
                 const fontButtonList = [{
                     text: t.titleAll,
                     class: `btn mini bg-darken-btn active`,
                     attrs: `data-action="${v.actionChangeVisibleList}" data-cat-id="all"`
                 }, ...data
-                .filter(({ itemList }) => objCheck(itemList))
+                .filter(({ itemList }) => injectObjCheck(itemList))
                 .map((data) => {
-                    const itemTitle = data.itemTitle ?? '';
+                    const itemTitle = decodeURIFormat(data.itemTitle ?? '')
                     const itemId = data.itemId ?? '';
 
                     return {
@@ -610,7 +609,7 @@ const requestHtml = (type = -1, data) => {
                 })];
 
                 resultHtml.find('.card-item-content').addClass('active');
-                return objCheck(fontButtonList) ?
+                return injectObjCheck(fontButtonList) ?
                 `${requestHtml(v.horizontalScrollerElem, { class: 'anim-changes font-list', content: requestHtml(v.btnList, fontButtonList) })}
                 
                 <div class="scroller">
@@ -654,7 +653,7 @@ const requestHtml = (type = -1, data) => {
             </script>`;
         }
         case v.cardBottomSheetContent: {
-            const itemTitle = data.itemTitle ?? '';
+            const itemTitle = decodeURIFormat(data.itemTitle ?? '')
 
             return `<div class="item-bottomsheet">
                 <section class="title-content width-spaces">
@@ -1416,6 +1415,106 @@ const requestHtml = (type = -1, data) => {
                                 </div>
                             </div>`;
                         }
+                        case v.detailsPage: {
+                            return `<div class="content progress">
+                                <section class="item-details">
+                                    <div class="item-trailer-content">
+                                        <div class="trailer-content">
+                                            <div class="lazy bg"></div>
+                                            <div class="trailer-btn">
+                                                <button class="btn extra ripple bold icon-left empty"></button>
+                                            </div>
+                                            <div class="preview"></div>
+                                            <div class="frame"></div>
+                                        </div>
+                                        <div class="trailer-progress"><span></span></div>
+                                    </div>
+                                    <div class="item-details-content">
+                                        <div class="scroller">
+                                            <div class="poster width-spaces">
+                                                <div class="item-poster"></div>
+                                            </div>
+                                            <div class="title width-spaces"></div>
+                                            <div class="details width-spaces"></div>
+                                            <div class="horizontal-scroller anim-changes buttons">
+                                                <section class="section-horizontal-list width-spaces-scroll">
+                                                    <button class="btn larger bg-white ripple bold retangle icon-left"></button>
+                                                    <button class="btn larger bg-darken-btn round ripple icon-left empty"></button>
+                                                    <button class="btn larger bg-darken-btn ripple round icon-left empty"></button>
+                                                    <button class="btn larger bg-darken-btn ripple round save icon-left empty"></button>
+                                                    <button class="btn larger bg-darken-btn round ripple icon-left empty"></button>
+                                                </section>
+                                            </div>
+                                            <div class="sinopse width-spaces"></div>
+                                            <div class="geners width-spaces"></div>
+                                            <div class="suggestions">
+                                                <div class="card-item-content">
+                                                    <div class="card-item-title-content width-spaces ">
+                                                        <div class="desc"></div>
+                                                        <div class="title"></div>
+                                                    </div>
+                                                    <div class="horizontal-scroller ">
+                                                        <section class="section-horizontal-list width-spaces-scroll">
+                                                            <div class="item-content">
+                                                                <div class="item">
+                                                                    <div class="item-poster"></div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="item-content">
+                                                                <div class="item">
+                                                                    <div class="item-poster"></div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="item-content">
+                                                                <div class="item">
+                                                                    <div class="item-poster"></div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="item-content">
+                                                                <div class="item">
+                                                                    <div class="item-poster"></div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="item-content">
+                                                                <div class="item">
+                                                                    <div class="item-poster"></div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="item-content">
+                                                                <div class="item">
+                                                                    <div class="item-poster"></div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="item-content">
+                                                                <div class="item">
+                                                                    <div class="item-poster"></div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="item-content">
+                                                                <div class="item">
+                                                                    <div class="item-poster"></div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="item-content">
+                                                                <div class="item">
+                                                                    <div class="item-poster"></div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="item-content">
+                                                                <div class="item">
+                                                                    <div class="item-poster"></div>
+                                                                </div>
+                                                            </div>
+                                                        </section>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>`;
+                        }
                     }
                 }
                 case v.progressSearchResult: {
@@ -2074,7 +2173,7 @@ const requestHtml = (type = -1, data) => {
         }
         case v.itemList: {
             let resultHtml = '';
-            const itemList = objCheck(data.itemList) ? data.itemList : null;
+            const itemList = injectObjCheck(data.itemList) ? data.itemList : null;
             const itemCardType = valCheck(data.itemCardType) ? parseInt(data.itemCardType) : v.cardPoster;
             const itemRandomize = data.itemRandomize ?? true;
             const itemEndless = data.itemEndless ?? false;
@@ -3341,7 +3440,7 @@ const t = {
     messageUpdate: 'Baixe e instale nossa nova versão do <b>9max</b> para ter acesso aos benefícios',
     messageTerms: 'Antes de continuar leia com atenção abaixo nossos termos e condições para o uso do aplicativo.',
     messageTermsOne: '<span>Ao <b>Continuar</b> você concorda que todo o conteúdo encontrado nesse aplicativo vem de sites terceiros espalhados pela internet como megafilmeshd, cinemao, topflix e outros.</span>',
-    messageTermsTwo: '<span>Ao <b>Continuar</b> você concorda que não somos responsáveis ​​nem administramos nada encontrado aqui e nem garantimos a funcionalidade dos conteúdos encontrados aqui.</span>',
+    messageTermsTwo: '<span>Ao <b>Continuar</b> você concorda que nos não somos responsáveis ​​nem administramos nada encontrado aqui e nem garantimos a funcionalidade dos conteúdos encontrados aqui.</span>',
     messageTermsTree: `<span>Ao <b>Continuar</b> você confirma que leu e está de acordo com nossa <a href="javascript:if(window.wv) window.wv.openLink('https://9max.wap.sh/policy.html'); else window.open('https://9max.wap.sh/policy.html', '_blank');" style="pointer-events: all;">Política de privacidade</a> e nossos <a href="javascript:if(window.wv) window.wv.openLink('https://9max.wap.sh/terms.html'); else window.open('https://9max.wap.sh/terms.html', '_blank');" style="pointer-events: all;">Termos de uso</a>.</span>`
 }
 const d = {
@@ -6530,16 +6629,19 @@ const d = {
             }
         },
         initializer: async() => {
-            d.userDB.myListStore = await new StorageData(v.storeMyList, true, 500);
-            d.userDB.topRatedStore = await new StorageData(v.storeTopRated, false, 10);
-            d.userDB.searchStore = await new StorageData(v.storeSearch, false, 20);
-            d.userDB.lastViewedStore = await new StorageData(v.storeLastViewed, false);
-            d.userDB.itemStore = await new StorageData(v.storeItem, false, 20);
-            d.userDB.userSettingsStore = await new StorageData(v.storeUserSettings, true, 1);
+            return new Promise(async(resolve, reject) => {
+                d.userDB.myListStore = await new StorageData(v.storeMyList, true, 500);
+                d.userDB.topRatedStore = await new StorageData(v.storeTopRated, false, 10);
+                d.userDB.searchStore = await new StorageData(v.storeSearch, false, 20);
+                d.userDB.lastViewedStore = await new StorageData(v.storeLastViewed, false);
+                d.userDB.itemStore = await new StorageData(v.storeItem, false, 20);
+                d.userDB.userSettingsStore = await new StorageData(v.storeUserSettings, true, 1);
+                resolve();
+            });
         },
         userSettingsInit: () => {
             const isUpdate = !(parseInt(document.title ?? '0') >= 1);
-            const isExist =  objCheck(d.userDB.userSettings());
+            const isExist =  injectObjCheck(d.userDB.userSettings());
             const dialogData = JSON.stringify({
                 params: `lang=${v.lang}&tagPage=${v.tagPage}&dialogType=${isUpdate ? v.dialogShowUpdate : v.dialogShowIntro}`,
                 bgColor: `#000000`,
@@ -6658,7 +6760,7 @@ const d = {
 const pageBroadcast = new AllInclusiveBroadcaster((data) => {
     switch(data.action) {
         case v.broadcastLoadCat: {
-            if(objCheck(data.settings)) {
+            if(injectObjCheck(data.settings)) {
                 const listElem = $('#list');
                 const buttonCatElem = $('.font-list button.activated span');
                 const title = data.settings.title;
@@ -6794,7 +6896,7 @@ const observerEndless = (type, endlessElem) => {
         }
         const addMoreItems = (data) => {
             if(!data.pagination) removeEndeless();
-            if(objCheck(data.data.itemList)) {
+            if(injectObjCheck(data.data.itemList)) {
                 setTimeout(() => {
                     data.data.itemEndless = false;
                     $(requestHtml(v.itemList, data.data)).insertBefore(endlessElem).ready(function() {
@@ -6873,6 +6975,12 @@ const observerColorsChanges = (viewFlagElem) => {
         changeAppToolBarColor('actionBarLayout', `#${colorPercentAccelerate}000000`);
     }
 }
+const decodeURIFormat = (text) => {
+    try {
+        return decodeURIComponent(escape(text ?? ''));
+    } catch (err) {}
+    return text;
+}
 
 const promiseAllList = (object, val = '') => {
     callback.abortAllPromises();
@@ -6892,7 +7000,6 @@ const adsRun = (onRetun) => {
     let adFinalStatus = '0';
     let adRetry = 0;
     const expire = setInterval(() => {
-        console.log('Ads final status: ' + adFinalStatus);
         if(adRetry >= 1) {
             window[key].resolve(d.adStatus.success);
             clearInterval(expire);
@@ -6950,15 +7057,14 @@ const promiseFetchPagination = async(data, page) => {
         resolve({ pagination: resultData.pagination, data: data });
     });
 }
-
-async function init() {
+const init = () => {
     d.userDB.myListStore.onChange = () => {
         const saveBtnElem = $(`[data-action=${v.actionToggleSaveItem}]`);
         const myListElem = $(`[data-list-id=myList]`);
         if(saveBtnElem[0]) {
             saveBtnElem.each(function() {
                 const itemId = getViewByAttr($(this), '[data-details]').attr('data-id');
-                const saveImg = objCheck(getDataInListByValue(d.userDB.myList(), ["itemId", itemId])) ? i.saved : i.save;
+                const saveImg = injectObjCheck(getDataInListByValue(d.userDB.myList(), ["itemId", itemId])) ? i.saved : i.save;
                 $(this).find('img').attr('src', saveImg);
             });
         }
@@ -6972,7 +7078,7 @@ async function init() {
                 }
             });
             myListElem.find('.horizontal-scroller > section > *').each(function() {
-                if(!objCheck(getDataInListByValue(d.userDB.myList(), ["itemId", $(this).attr('data-id')]))) $(this).remove();
+                if(!injectObjCheck(getDataInListByValue(d.userDB.myList(), ["itemId", $(this).attr('data-id')]))) $(this).remove();
             });
             
             if(!myListElem.find('.horizontal-scroller > section > *')[0]) myListElem.addClass('hide');
@@ -7168,8 +7274,6 @@ async function init() {
                     run();
                 });
                 else run();
-
-                console.log(`Action: open || value: ${val} || autoSubmit: ${isAutoSubmit}`);
                 break;
             }
             case v.actionCloseSearchBox: {
@@ -7424,7 +7528,7 @@ async function init() {
                     clickedElem.addClass('active');
                     promiseFetch(data)
                     .then(data => {
-                        if(objCheck(data)) {
+                        if(injectObjCheck(data)) {
                             $('.episodes').changeHtml(v.btnList, data);
                         }
                         else {
@@ -7534,7 +7638,8 @@ async function init() {
     if(v.isIframe) bodyElem.css('background-color', 'transparent');
     initPage(v.tagPage);
 }
-async function initPage(type) {
+
+function initPage(type) {
     changeAppToolBarColor('actionBarLayout', '#00000000');
     if(!containerElem.find('.content.progress')[0]) containerElem.changeHtml(v.cardProgress, v.progressPage, () => changeAppToolBarColor('actionBarLayout', '#00000000'));
     
@@ -7611,7 +7716,6 @@ async function initPage(type) {
         
                                         if(window.wv) window.wv.changeNavigationBarColor(rgba2hex($(this).css('background-color')));
                                         adsRun((adStatus) => {
-                                            console.log('Ads status: ' + adStatus);
                                             if(adStatus === '6') init();
                                         });
                                     }, 100);
@@ -7724,14 +7828,14 @@ async function androidAsyncFetch(key, itemRequestSettings) {
 
         window[key] = {
             resolve: (data, isCached = false) => {
-                if(!objCheck(data) && retry <= 4 && !validator.includes('search')) window[key].run();
-                else if(!objCheck(data) && retry <= 0 && validator.includes('search')) window[key].run();
+                if(!injectObjCheck(data) && retry <= 4 && !validator.includes('search')) window[key].run();
+                else if(!injectObjCheck(data) && retry <= 0 && validator.includes('search')) window[key].run();
                 else {
                     resolve(data);
                     callback.fetchPendingPromises.remove(key);
                     delete window[key];
                 }
-                console.log(`Fetch cached: ${isCached} || Retry: ${retry} || List: ${itemRequestSettings.url} || Params: ${valCheck(itemRequestSettings.params) ? itemRequestSettings.params : 'no have'}`);
+                if(v.developerMode) console.log(`Fetch cached: ${isCached} || Retry: ${retry} || List: ${itemRequestSettings.url} || Params: ${valCheck(itemRequestSettings.params) ? itemRequestSettings.params : 'no have'}`);
                 retry++;
             },
             androidResolve: (isCached) => {
@@ -7775,7 +7879,7 @@ function imageErrorReturn(value) {
 function valCheck(v) {
     return (v === '' || typeof v === 'undefined' || v === null || v === 'null') ? false : true;
 }
-function objCheck(obj) {
+function injectObjCheck(obj) {
     try {
         return Object.keys(obj).length !== 0;
     }catch (err) {}
@@ -7789,7 +7893,7 @@ function objValidCheck(obj) {
 }
 function topRatedCheck(data, itemTitle) {
     try {
-        return objCheck(data.filter((data) => valueComparePercentage(data.itemTitle, itemTitle) >= 80));
+        return injectObjCheck(data.filter((data) => valueComparePercentage(data.itemTitle, itemTitle) >= 80));
     }catch (err) {}
     return false;
 }
@@ -8212,9 +8316,9 @@ function convertElementToJson(convertType, font, content) {
 
                     } catch(err) {console.log(err);}
                 }
-                default: return (objCheck(list)) ? { itemList: list, pagination: pagination } : null;
+                default: return (injectObjCheck(list)) ? { itemList: list, pagination: pagination } : null;
             }
-            return (objCheck(list)) ? { itemList: list.sort((a, b) => a.order - b.order).map(({order, ...rest}) => rest), pagination: pagination } : null;
+            return (injectObjCheck(list)) ? { itemList: list.sort((a, b) => a.order - b.order).map(({order, ...rest}) => rest), pagination: pagination } : null;
         }
         case v.convertDetails: {
             switch(font) {
@@ -8293,9 +8397,9 @@ function convertElementToJson(convertType, font, content) {
                     try {
                         const itemDecodeData = (parseJSON(getParam('data') ?? 'e30=') ?? {});
                         let json = (JSON.parse(content)).results.filter(({ title }) => valueComparePercentage(textNormalize(title), textNormalize(itemDecodeData.itemTitle)) >= 55)[0] ?? {};
-                        json = objCheck(json) ? json : (JSON.parse(content)).results[0] ?? {};
+                        json = injectObjCheck(json) ? json : (JSON.parse(content)).results[0] ?? {};
 
-                        return { itemTmdbId: json.id ?? 0, itemSinopse: json.overview ?? '', itemGeners: d.genres.filter(data => objCheck(json.genre_ids.filter(id => id === data.id))).map(data => data.name) ?? [] };
+                        return { itemTmdbId: json.id ?? 0, itemSinopse: json.overview ?? '', itemGeners: d.genres.filter(data => injectObjCheck(json.genre_ids.filter(id => id === data.id))).map(data => data.name) ?? [] };
                     } catch (err) {console.log(err);}
                     return null;
                 }
@@ -8322,8 +8426,7 @@ function convertElementToJson(convertType, font, content) {
                         const season = $('[data-list-id=seasons] .active').attr('data-season') ?? '';
                         const lastViewed = $(`[data-action=${v.actionShowLastViewed}]`).find('span').text()?.split(t.lastViewed)[1] ?? '';
                         let episode = 0;
-                        
-                        console.log(lastViewed);
+
                         $.each(json.list, function(index, data) {
                             episode++;
                             const item = {};
