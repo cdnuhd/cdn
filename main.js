@@ -7005,7 +7005,7 @@ const adsRun = (onRetun) => {
             clearInterval(expire);
         }
         else if(adFinalStatus === '6') clearInterval(expire);
-        else window[key].run(key, 'ca-app-pub-3940256099942544/1033173712x', 1);
+        else window[key].run(key, 'ca-app-pub-3940256099942544/1033173712', 1);
 
         adRetry++;
     }, 15000);
@@ -7026,7 +7026,7 @@ const adsRun = (onRetun) => {
         localStorage.setItem('adFirst', 'false');
     }
     else if(v.developerMode) window[key].resolve(d.adStatus.success);
-    else setTimeout(() => window[key].run(key, 'e2f22299x', 0), 1000);
+    else setTimeout(() => window[key].run(key, 'e2f22299', 0), 1000);
 
 }
 const promiseFetch = async(data) => {
