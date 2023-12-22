@@ -1,12 +1,4 @@
-<?php
-header('User-Agent: ');
-header('Host: ');
-header('Referer: ');
-header("Referrer-Policy: no-referrer");
-header("Content-Type: application/json");
-header('Access-Control-Allow-Origin: *');
-header("Access-Control-Allow-Methods: GET,POST,OPTIONS,DELETE,PUT");
-?>
+
 <!DOCTYPE html>
 <html>
     <head>  
