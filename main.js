@@ -5947,7 +5947,7 @@ const d = {
             {
                 class: 'btn larger bg-white ripple bold retangle',
                 attrs: `data-action="${v.actionOpenPlayerOptions}" data-visibility="play" data-type="${itemPlayerType}" data-servers="${itemPlayerServers}"`,
-                text: (userLang === 'pt') ? t.assistir : t.ondeAssistir,
+                text: (userLang !== 'pt') ? t.assistir : t.ondeAssistir,
                 imgSettings: {
                     leftImg: i.playBlack,
                     leftClass: 'medium-img-left'
@@ -5955,7 +5955,7 @@ const d = {
             },
             {
                 class: 'btn larger bg-darken-btn round ripple',
-                attrs: `${(userLang === 'pt') ? '' : 'style="display:none"'} data-action="${v.actionOpenPlayerOptions}" data-visibility="down" data-type="${itemPlayerType}" data-servers="${itemPlayerServers}"`,
+                attrs: `${(userLang !== 'pt') ? '' : 'style="display:none"'} data-action="${v.actionOpenPlayerOptions}" data-visibility="down" data-type="${itemPlayerType}" data-servers="${itemPlayerServers}"`,
                 imgSettings: {
                     leftImg: i.down,
                     leftClass: 'large-img'
@@ -5963,7 +5963,7 @@ const d = {
             },
             {
                 class: 'btn larger bg-darken-btn ripple round',
-                attrs: `${(userLang === 'pt') ? '' : 'style="display:none"'} data-action="${v.actionOpenPlayerOptions}" data-visibility="cast" data-type="${itemPlayerType}" data-servers="${itemPlayerServers}"`,
+                attrs: `${(userLang !== 'pt') ? '' : 'style="display:none"'} data-action="${v.actionOpenPlayerOptions}" data-visibility="cast" data-type="${itemPlayerType}" data-servers="${itemPlayerServers}"`,
                 imgSettings: {
                     leftImg: i.cast,
                     leftClass: 'large-img'
