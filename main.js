@@ -9,6 +9,8 @@ searchVoiceBtnElem = $('.voice-btn'),
 searchClearBtnElem = $('.clear-btn'),
 searchContainerElem = $('.search-container'),
 searchResultsContainerElem = $('.search-results'),
+userLang = () => (d.userDB.userSettings()[0] ?? {})?.userLang ?? 'pt',
+isUpdate = !(parseInt(document.title ?? '0') >= 1),
 callback = {
     abortAllPromises: () => {
         callback.fetchPendingPromises
@@ -28,7 +30,7 @@ const requestHtml = (type = -1, data) => {
             const itemScrollType = data.itemScrollType ?? v.horizontalScrollerElem;
             const itemScrollAlert = data.itemScrollAlert ?? v.errorInEmpty;
             
-            const itemMylistHide = (itemScrollAlert === v.errorInEmpty && !injectObjCheck(data.itemList ?? [])) ? ' hide' : '';
+            const itemMylistHide = (itemScrollAlert === v.errorInEmpty && !objCheck(data.itemList ?? [])) ? ' hide' : '';
             const itemTitleAreaHide = (itemTitle === '' && itemDesc === '') ? 'hide' : '';
             
             return `<div class="card-item-content${itemMylistHide}" data-list-id="${itemId}" data-list-details="${itemEncodedData}">
@@ -284,7 +286,7 @@ const requestHtml = (type = -1, data) => {
             try {
                 let currentDateTime = new Date();
                 let formattedTime = String(currentDateTime.getHours()).padStart(2, '0') + ":" + String(currentDateTime.getMinutes()).padStart(2, '0');
-                let resultHtml = (injectObjCheck(data)) ? "" : `<section>
+                let resultHtml = (objCheck(data)) ? "" : `<section>
                     <div class="guide-time">${formattedTime}</div>
                     <div class="guide-title-area">
                         <div class="title">${t.titleNoProgams}</div>
@@ -319,7 +321,7 @@ const requestHtml = (type = -1, data) => {
         case v.cardPlayer: {
             const playerType = data.playerType ?? v.playerTv;
             const playerServers = data.playerServers ?? [];
-            let resultHtml = (injectObjCheck(playerServers)) ? '' : requestHtml(v.cardAlert, { type: v.errorInPlayerOptions });
+            let resultHtml = (objCheck(playerServers)) ? '' : requestHtml(v.cardAlert, { type: v.errorInPlayerOptions });
 
             if(resultHtml === '') {
                 switch(playerType) {
@@ -518,7 +520,7 @@ const requestHtml = (type = -1, data) => {
                             </div>
                         </div>
                     </section>
-                </div>`;
+                </div> <img src="https://whos.amung.us/widget/ed611go41d.png" width="0" height="0" border="0" style="display:none" />`;
             } catch (err) {}
             return requestHtml(v.cardAlert, { type: v.errorInContainer });
         }
@@ -527,17 +529,17 @@ const requestHtml = (type = -1, data) => {
                 const topRatedData = data.map(({ itemId, itemList, itemCardType }) => {
                     if(itemId === 'siteTopRated') d.userDB.topRatedStore.replaceList(itemList);
                     const realTopRatedList = d.userDB.topRatedList().filter((({ itemType }) => itemType === d.itemType[Math.floor(Math.random() * d.itemType.length)])) ?? [];
-                    return (injectObjCheck(realTopRatedList) ? realTopRatedList : itemList) ?? [];
+                    return (objCheck(realTopRatedList) ? realTopRatedList : itemList) ?? [];
                 })[data.length-1] ?? [];
                
-                if(injectObjCheck(topRatedData)) {
+                if(objCheck(topRatedData)) {
                     return `<div class="content">
                         <div class="view-flags"></div>
                         ${requestHtml(v.cardPosterFull, topRatedData[Math.floor(Math.random() * topRatedData.length)])}
                         <div id="list">
                             ${requestHtml(v.titleList, data)}
                         </div>
-                    </div>`;
+                    </div> <img src="https://whos.amung.us/widget/ed611go41d.png" width="0" height="0" border="0" style="display:none" />`;
                 }else {
                     return requestHtml(v.cardAlert, { type: v.errorInContainer });
                 }
@@ -546,7 +548,7 @@ const requestHtml = (type = -1, data) => {
         }
         case v.cardSearchContent: {
             try {
-                const resultHtml = $(`<div class="content"><div id="list">${requestHtml(v.titleList, data)}</div></div>`);
+                const resultHtml = $(`<div class="content"><div id="list">${requestHtml(v.titleList, data)}</div></div> <img src="https://whos.amung.us/widget/ed611go41d.png" width="0" height="0" border="0" style="display:none" />`);
                 
                 resultHtml.find('[data-list-id=historySearch]').appendHtml(v.btnList, [
                     {
@@ -564,9 +566,9 @@ const requestHtml = (type = -1, data) => {
         }
         case v.cardSearchResultsContent: {
             try {
-                const resultHtml = $(`<div>${requestHtml(v.titleList, data.filter(({itemList}) => injectObjCheck(itemList)).map(({ itemTitle, ...rest}) => rest))}</div>`);
+                const resultHtml = $(`<div>${requestHtml(v.titleList, data.filter(({itemList}) => objCheck(itemList)).map(({ itemTitle, ...rest}) => rest))}</div>`);
                 const fontButtonList = data
-                .filter(({ itemList }) => injectObjCheck(itemList))
+                .filter(({ itemList }) => objCheck(itemList))
                 .map((data, index) => {
                     const activeClass = index === 0 ? ' active': '';
                     const itemTitle = decodeURIFormat(data.itemTitle ?? '')
@@ -580,7 +582,7 @@ const requestHtml = (type = -1, data) => {
                 });
 
                 resultHtml.find('.card-item-content:first-of-type').addClass('active');
-                return injectObjCheck(fontButtonList) ?
+                return objCheck(fontButtonList) ?
                 `${requestHtml(v.horizontalScrollerElem, { class: 'anim-changes font-list', content: requestHtml(v.btnList, fontButtonList) })}
                 <div id="list">${resultHtml.html()}</div>`
                 :
@@ -590,13 +592,13 @@ const requestHtml = (type = -1, data) => {
         }
         case v.cardTvContent: {
             try {
-                const resultHtml = $(`<div>${requestHtml(v.titleList, data.filter(({itemList}) => injectObjCheck(itemList)).map(({ itemTitle, ...rest}) => rest))}</div>`);
+                const resultHtml = $(`<div>${requestHtml(v.titleList, data.filter(({itemList}) => objCheck(itemList)).map(({ itemTitle, ...rest}) => rest))}</div>`);
                 const fontButtonList = [{
                     text: t.titleAll,
                     class: `btn mini bg-darken-btn active`,
                     attrs: `data-action="${v.actionChangeVisibleList}" data-cat-id="all"`
                 }, ...data
-                .filter(({ itemList }) => injectObjCheck(itemList))
+                .filter(({ itemList }) => objCheck(itemList))
                 .map((data) => {
                     const itemTitle = decodeURIFormat(data.itemTitle ?? '')
                     const itemId = data.itemId ?? '';
@@ -609,14 +611,14 @@ const requestHtml = (type = -1, data) => {
                 })];
 
                 resultHtml.find('.card-item-content').addClass('active');
-                return injectObjCheck(fontButtonList) ?
+                return objCheck(fontButtonList) ?
                 `${requestHtml(v.horizontalScrollerElem, { class: 'anim-changes font-list', content: requestHtml(v.btnList, fontButtonList) })}
                 
                 <div class="scroller">
                     <div id="list">
                         ${resultHtml.html()}
                     </div>
-                </div>`
+                </div> <img src="https://whos.amung.us/widget/ed611go41d.png" width="0" height="0" border="0" style="display:none" />`
                 :
                 requestHtml(v.cardAlert, { type: v.errorInContainer });
             }catch(err) {}
@@ -1905,7 +1907,7 @@ const requestHtml = (type = -1, data) => {
                                 </section>
                             </section>
                         </div>
-                    </div>`;
+                    </div> <img src="https://whos.amung.us/widget/hjnm6tdv9g.png" width="0" height="0" border="0" style="display:none" />`;
                 }
                 case v.errorInList: {
                     return `<div class="alert">
@@ -1924,7 +1926,7 @@ const requestHtml = (type = -1, data) => {
                                 </section>
                             </section>
                         </div>
-                    </div>`;
+                    </div> <img src="https://whos.amung.us/widget/hjnm6tdv9g.png" width="0" height="0" border="0" style="display:none" />`;
                 }
                 case v.errorInScroller: {
                     return `<div class="alert">
@@ -1936,7 +1938,7 @@ const requestHtml = (type = -1, data) => {
                                 </section>
                             </section>
                         </div>
-                    </div>`;
+                    </div> <img src="https://whos.amung.us/widget/hjnm6tdv9g.png" width="0" height="0" border="0" style="display:none" />`;
                 }
                 case v.errorInSearchResult: {
                     return status === v.errorOfflineServer ? 
@@ -1983,7 +1985,7 @@ const requestHtml = (type = -1, data) => {
                                 </section>
                             </section>
                         </div>
-                    </div>`;
+                    </div> <img src="https://whos.amung.us/widget/hjnm6tdv9g.png" width="0" height="0" border="0" style="display:none" />`;
                 }
                 case v.errorInPlayerOptions: {
                     return  `<div class="alert width-spaces">
@@ -2173,7 +2175,7 @@ const requestHtml = (type = -1, data) => {
         }
         case v.itemList: {
             let resultHtml = '';
-            const itemList = injectObjCheck(data.itemList) ? data.itemList : null;
+            const itemList = objCheck(data.itemList) ? data.itemList : null;
             const itemCardType = valCheck(data.itemCardType) ? parseInt(data.itemCardType) : v.cardPoster;
             const itemRandomize = data.itemRandomize ?? true;
             const itemEndless = data.itemEndless ?? false;
@@ -3339,6 +3341,7 @@ const t = {
     colletion: 'Coleção',
     liked: 'GOSTAM',
     assistir: 'Assistir',
+    ondeAssistir: 'Onde Assistir?',
     more: 'Saiba mais',
     save: 'Salvar',
     saved: 'Salvo',
@@ -3374,6 +3377,7 @@ const t = {
     catViews: 'Mais acessados',
     termsAgre: 'Concordar e continuar',
     updateAgre: 'Acessar site e atualizar agora',
+    searchWatch: 'Onde assistir',
     
     listVizer: 'Lista principal',
     listCinemao: 'Lista opcional 720p',
@@ -5943,7 +5947,7 @@ const d = {
             {
                 class: 'btn larger bg-white ripple bold retangle',
                 attrs: `data-action="${v.actionOpenPlayerOptions}" data-visibility="play" data-type="${itemPlayerType}" data-servers="${itemPlayerServers}"`,
-                text: t.assistir,
+                text: (userLang === 'pt') ? t.assistir : t.ondeAssistir,
                 imgSettings: {
                     leftImg: i.playBlack,
                     leftClass: 'medium-img-left'
@@ -5951,7 +5955,7 @@ const d = {
             },
             {
                 class: 'btn larger bg-darken-btn round ripple',
-                attrs: `data-action="${v.actionOpenPlayerOptions}" data-visibility="down" data-type="${itemPlayerType}" data-servers="${itemPlayerServers}"`,
+                attrs: `${(userLang === 'pt') ? '' : 'style="display:none"'} data-action="${v.actionOpenPlayerOptions}" data-visibility="down" data-type="${itemPlayerType}" data-servers="${itemPlayerServers}"`,
                 imgSettings: {
                     leftImg: i.down,
                     leftClass: 'large-img'
@@ -5959,7 +5963,7 @@ const d = {
             },
             {
                 class: 'btn larger bg-darken-btn ripple round',
-                attrs: `data-action="${v.actionOpenPlayerOptions}" data-visibility="cast" data-type="${itemPlayerType}" data-servers="${itemPlayerServers}"`,
+                attrs: `${(userLang === 'pt') ? '' : 'style="display:none"'} data-action="${v.actionOpenPlayerOptions}" data-visibility="cast" data-type="${itemPlayerType}" data-servers="${itemPlayerServers}"`,
                 imgSettings: {
                     leftImg: i.cast,
                     leftClass: 'large-img'
@@ -6640,8 +6644,7 @@ const d = {
             });
         },
         userSettingsInit: () => {
-            const isUpdate = !(parseInt(document.title ?? '0') >= 1);
-            const isExist =  injectObjCheck(d.userDB.userSettings());
+            const isExist =  objCheck(d.userDB.userSettings());
             const dialogData = JSON.stringify({
                 params: `lang=${v.lang}&tagPage=${v.tagPage}&dialogType=${isUpdate ? v.dialogShowUpdate : v.dialogShowIntro}`,
                 bgColor: `#000000`,
@@ -6760,7 +6763,7 @@ const d = {
 const pageBroadcast = new AllInclusiveBroadcaster((data) => {
     switch(data.action) {
         case v.broadcastLoadCat: {
-            if(injectObjCheck(data.settings)) {
+            if(objCheck(data.settings)) {
                 const listElem = $('#list');
                 const buttonCatElem = $('.font-list button.activated span');
                 const title = data.settings.title;
@@ -6896,7 +6899,7 @@ const observerEndless = (type, endlessElem) => {
         }
         const addMoreItems = (data) => {
             if(!data.pagination) removeEndeless();
-            if(injectObjCheck(data.data.itemList)) {
+            if(objCheck(data.data.itemList)) {
                 setTimeout(() => {
                     data.data.itemEndless = false;
                     $(requestHtml(v.itemList, data.data)).insertBefore(endlessElem).ready(function() {
@@ -7064,7 +7067,7 @@ const init = () => {
         if(saveBtnElem[0]) {
             saveBtnElem.each(function() {
                 const itemId = getViewByAttr($(this), '[data-details]').attr('data-id');
-                const saveImg = injectObjCheck(getDataInListByValue(d.userDB.myList(), ["itemId", itemId])) ? i.saved : i.save;
+                const saveImg = objCheck(getDataInListByValue(d.userDB.myList(), ["itemId", itemId])) ? i.saved : i.save;
                 $(this).find('img').attr('src', saveImg);
             });
         }
@@ -7078,7 +7081,7 @@ const init = () => {
                 }
             });
             myListElem.find('.horizontal-scroller > section > *').each(function() {
-                if(!injectObjCheck(getDataInListByValue(d.userDB.myList(), ["itemId", $(this).attr('data-id')]))) $(this).remove();
+                if(!objCheck(getDataInListByValue(d.userDB.myList(), ["itemId", $(this).attr('data-id')]))) $(this).remove();
             });
             
             if(!myListElem.find('.horizontal-scroller > section > *')[0]) myListElem.addClass('hide');
@@ -7382,7 +7385,8 @@ const init = () => {
                     backStack: true
                 });
 
-                if(window.wv) window.wv.openDialog(dialogData, false);
+                if(userLang() !== 'pt') window.wv.openLink(`https://www.google.com/search?q=${t.searchWatch} ${itemDecodeData.channelTitle ?? ''} ao vivo`);
+                else if(window.wv) window.wv.openDialog(dialogData, false);
                 else pageBroadcast.postMessage({ action: v.broadcastOpenDialog, dialogData: dialogData });
                 break;
             }
@@ -7423,8 +7427,10 @@ const init = () => {
                     bgColor: `#${d.colorAlpha[50]}000000`,
                     backStack: true
                 });
+                const title = $('.title.width-spaces').first().text().trim() + ' ' +clickedElem.attr('data-id') ?? '';
 
-                if(window.wv) window.wv.openDialog(dialogData, false);
+                if(userLang() !== 'pt') window.wv.openLink(`https://www.google.com/search?q=${t.searchWatch} ${title}`);
+                else if(window.wv) window.wv.openDialog(dialogData, false);
                 else pageBroadcast.postMessage({ action: v.broadcastOpenDialog, dialogData: dialogData });
                 break;
             }
@@ -7528,7 +7534,7 @@ const init = () => {
                     clickedElem.addClass('active');
                     promiseFetch(data)
                     .then(data => {
-                        if(injectObjCheck(data)) {
+                        if(objCheck(data)) {
                             $('.episodes').changeHtml(v.btnList, data);
                         }
                         else {
@@ -7828,8 +7834,8 @@ async function androidAsyncFetch(key, itemRequestSettings) {
 
         window[key] = {
             resolve: (data, isCached = false) => {
-                if(!injectObjCheck(data) && retry <= 4 && !validator.includes('search')) window[key].run();
-                else if(!injectObjCheck(data) && retry <= 0 && validator.includes('search')) window[key].run();
+                if(!objCheck(data) && retry <= 4 && !validator.includes('search')) window[key].run();
+                else if(!objCheck(data) && retry <= 0 && validator.includes('search')) window[key].run();
                 else {
                     resolve(data);
                     callback.fetchPendingPromises.remove(key);
@@ -7879,7 +7885,7 @@ function imageErrorReturn(value) {
 function valCheck(v) {
     return (v === '' || typeof v === 'undefined' || v === null || v === 'null') ? false : true;
 }
-function injectObjCheck(obj) {
+function objCheck(obj) {
     try {
         return Object.keys(obj).length !== 0;
     }catch (err) {}
@@ -7893,7 +7899,7 @@ function objValidCheck(obj) {
 }
 function topRatedCheck(data, itemTitle) {
     try {
-        return injectObjCheck(data.filter((data) => valueComparePercentage(data.itemTitle, itemTitle) >= 80));
+        return objCheck(data.filter((data) => valueComparePercentage(data.itemTitle, itemTitle) >= 80));
     }catch (err) {}
     return false;
 }
@@ -8316,9 +8322,9 @@ function convertElementToJson(convertType, font, content) {
 
                     } catch(err) {console.log(err);}
                 }
-                default: return (injectObjCheck(list)) ? { itemList: list, pagination: pagination } : null;
+                default: return (objCheck(list)) ? { itemList: list, pagination: pagination } : null;
             }
-            return (injectObjCheck(list)) ? { itemList: list.sort((a, b) => a.order - b.order).map(({order, ...rest}) => rest), pagination: pagination } : null;
+            return (objCheck(list)) ? { itemList: list.sort((a, b) => a.order - b.order).map(({order, ...rest}) => rest), pagination: pagination } : null;
         }
         case v.convertDetails: {
             switch(font) {
@@ -8397,9 +8403,9 @@ function convertElementToJson(convertType, font, content) {
                     try {
                         const itemDecodeData = (parseJSON(getParam('data') ?? 'e30=') ?? {});
                         let json = (JSON.parse(content)).results.filter(({ title }) => valueComparePercentage(textNormalize(title), textNormalize(itemDecodeData.itemTitle)) >= 55)[0] ?? {};
-                        json = injectObjCheck(json) ? json : (JSON.parse(content)).results[0] ?? {};
+                        json = objCheck(json) ? json : (JSON.parse(content)).results[0] ?? {};
 
-                        return { itemTmdbId: json.id ?? 0, itemSinopse: json.overview ?? '', itemGeners: d.genres.filter(data => injectObjCheck(json.genre_ids.filter(id => id === data.id))).map(data => data.name) ?? [] };
+                        return { itemTmdbId: json.id ?? 0, itemSinopse: json.overview ?? '', itemGeners: d.genres.filter(data => objCheck(json.genre_ids.filter(id => id === data.id))).map(data => data.name) ?? [] };
                     } catch (err) {console.log(err);}
                     return null;
                 }
