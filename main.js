@@ -7427,7 +7427,7 @@ const init = () => {
                     bgColor: `#${d.colorAlpha[50]}000000`,
                     backStack: true
                 });
-                const title = $('.title.width-spaces').first().text().trim() + ' ' +clickedElem.attr('data-id') ?? '';
+                const title = $('.title.width-spaces').first().text().trim() + ' ' + valCheck(clickedElem.attr('data-id')) ? clickedElem.attr('data-id') : '';
 
                 if(userLang() !== 'pt') window.wv.openLink(`https://www.google.com/search?q=${t.searchWatch} ${title}`);
                 else if(window.wv) window.wv.openDialog(dialogData, false);
