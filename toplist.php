@@ -5,7 +5,7 @@
     <body>
         <div class="items">
             1
-            <div data-itemid="vizer-planeta-dos-macacos-o-reinado" data-itemcardtype="null" data-itemtype="movie" data-itemtitle="Planeta dos Macacos: O Reinado" data-itemposter="https://vizertv.in/content/movies/posterPt/185/40550.webp" data-itemposterbackground="https://vizertv.in/content/movies/background/1280/40550.jpg" data-itemdetails="eyJpdGVtVHlwZSI6InZpemVyLW1vdmllIiwiaXRlbUlkIjoiNDA1NTAiLCJpdGVtTmFtZSI6InBsYW5ldGEgZG9zIG1hY2Fjb3MgbyByZWluYWRvIiwiaXRlbVllYXIiOiIyMDI0In0=" data-itemyear="2024" data-itemrate="7.4"></div>
+            <div data-itemid="querofilmes-3planeta-dos-macacos-o-reinado" data-itemcardtype="null" data-itemtype="movie" data-itemtitle="Planeta dos Macacos: O Reinado" data-itemposter="https://image.tmdb.org/t/p/w600_and_h900_bestv2/dzDK2TMXsxrolGVdZwNGcOlZqrF.jpg" data-itemposterbackground="https://image.tmdb.org/t/p/original/dzDK2TMXsxrolGVdZwNGcOlZqrF.jpg" data-itemdetails="eyJpdGVtVHlwZSI6InF1ZXJvZmlsbWVzLW1vdmllIiwiaXRlbU5hbWUiOiJwbGFuZXRhIGRvcyBtYWNhY29zIG8gcmVpbmFkbyIsIml0ZW1ZZWFyIjoiMjAyNCJ9" data-itemyear="2024" data-itemrate="6.8"></div>
             2
             <div data-itemid="vizer-kimetsu-no-yaiba" data-itemcardtype="null" data-itemtype="serie" data-itemtitle="Kimetsu no Yaiba" data-itemposter="https://vizertv.in/content/series/posterPt/185/5622.webp" data-itemposterbackground="https://vizertv.in/content/series/background/1280/5622.jpg" data-itemdetails="eyJpdGVtVHlwZSI6InZpemVyLXNlcmllIiwiaXRlbUlkIjoiNTYyMiIsIml0ZW1OYW1lIjoia2ltZXRzdSBubyB5YWliYSIsIml0ZW1ZZWFyIjoiMjAxOSJ9" data-itemyear="2019" data-itemrate="8.7"></div>
             3
