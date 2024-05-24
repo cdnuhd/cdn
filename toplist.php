@@ -5,7 +5,7 @@
     <body>
         <div class="items">
             1
-            <div data-itemid="supertela-furiosa-uma-saga-mad-max" data-itemcardtype="null" data-itemtype="movie" data-itemtitle="Furiosa: Uma Saga Mad Max" data-itemposter="https://image.tmdb.org/t/p/w300/afy34b5II1NgA6paGgHnf4y86w1.jpg" data-itemposterbackground="https://image.tmdb.org/t/p/original/afy34b5II1NgA6paGgHnf4y86w1.jpg" data-itemdetails="eyJpdGVtVHlwZSI6InN1cGVydGVsYS1tb3ZpZSIsIml0ZW1OYW1lIjoiZnVyaW9zYSB1bWEgc2FnYSBtYWQgbWF4IiwiaXRlbVllYXIiOiIyMDI0In0=" data-itemyear="2024" data-itemrate="5.8"></div>
+            <div data-itemid="vizer-furiosa-uma-saga-mad-max" data-itemcardtype="null" data-itemtype="movie" data-itemtitle="Furiosa: Uma Saga Mad Max" data-itemposter="https://vizertv.in/content/movies/posterPt/185/40588.webp" data-itemposterbackground="https://vizertv.in/content/movies/background/1280/40588.jpg" data-itemdetails="eyJpdGVtVHlwZSI6InZpemVyLW1vdmllIiwiaXRlbUlkIjoiNDA1ODgiLCJpdGVtTmFtZSI6ImZ1cmlvc2EgdW1hIHNhZ2EgbWFkIG1heCIsIml0ZW1ZZWFyIjoiMjAyNCJ9" data-itemyear="2024" data-itemrate="8.0"></div>
             2
             <div data-itemid="vizer-planeta-dos-macacos-o-reinado" data-itemcardtype="null" data-itemtype="movie" data-itemtitle="Planeta dos Macacos: O Reinado" data-itemposter="https://vizertv.in/content/movies/posterPt/185/40550.webp" data-itemposterbackground="https://vizertv.in/content/movies/background/1280/40550.jpg" data-itemdetails="eyJpdGVtVHlwZSI6InZpemVyLW1vdmllIiwiaXRlbUlkIjoiNDA1NTAiLCJpdGVtTmFtZSI6InBsYW5ldGEgZG9zIG1hY2Fjb3MgbyByZWluYWRvIiwiaXRlbVllYXIiOiIyMDI0In0=" data-itemyear="2024" data-itemrate="7.4"></div>
             3
