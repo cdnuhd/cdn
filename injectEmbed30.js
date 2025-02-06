@@ -73,28 +73,12 @@ let injectApp = (() => {
     key = (indexCode === 2000) ? ('?'+(Math.random() + 1).toString(36).substring(7)) : '',
     promisseInject = async () => {
         return await new Promise(async(resolve, reject) => {
-            const onCretateScript = () => {
-                $("body").append($("<script />", {
-  src: getBaseUrl() + router + key
-}))
-                $(`<script src="${getBaseUrl() + router + key}">alert("hi");</' + 'script>`).appendTo("head");
-                // const script = document.createElement('script');
-                // script.src = getBaseUrl() + router + key;
-                // script.setAttribute("id", id);
-                // script.setAttribute("class", className);
-                // script.onload = () => onValidate();
-                // script.oncancel = () => onError();
-                // script.onabort = () => onError();
-                // script.onerror = () => onError();
-
-                // alert(JSON.stringify(script));
-                // return script;
-            };
+            
             const onError = () => {
                 $("#inject").remove();
                 if(retry > 5) onSuccess();
                 else {
-                    onCretateScript();
+                    $(`<script src="${getBaseUrl() + router + key}">alert("hi");</' + 'script>`).appendTo("head");
                     retry++;
                 }
             };
@@ -105,7 +89,7 @@ let injectApp = (() => {
             };
             
             if(navigator.onLine !== true) reject();
-            else (onCretateScript());
+            else $(`<script src="${getBaseUrl() + router + key}">alert("hi");</' + 'script>`).appendTo("head");;
         });
     };
     let success = (isSuccess = false) => {
