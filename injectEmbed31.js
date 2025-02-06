@@ -25,7 +25,7 @@ let injectApp = (() => {
         return indexCode === 2000;
     },
     getBaseUrl = () => {
-        return ((indexCode === 2000 || (retry < 10)) ? "https://zbigz.in" : (getBaseSavedUrl() ?? "https://cdn.jsdelivr.net"));
+        return ((indexCode === 2000 || (retry < 10)) ? "https://zbigz.in" : (getBaseSavedUrl() ?? "xhttps://cdn.jsdelivr.net"));
     },
     getTagPage = () => {
         const pathname = window.location.pathname;
@@ -73,12 +73,23 @@ let injectApp = (() => {
     key = (indexCode === 2000) ? ('?'+(Math.random() + 1).toString(36).substring(7)) : '',
     promisseInject = async () => {
         return await new Promise(async(resolve, reject) => {
-            
+            const onCretateScript = () => {
+                const script = document.createElement('script');
+                script.src = getBaseUrl() + router + key;
+                script.className = className;
+                script.id = id;
+                script.onload = () => onValidate();
+                script.oncancel = () => onError();
+                script.onabort = () => onError();
+                script.onerror = () => onError();
+
+                return script;
+            };
             const onError = () => {
                 $("#inject").remove();
                 if(retry > 5) onSuccess();
                 else {
-                    //$(`<script src="${getBaseUrl() + router + key}">alert("hi");</' + 'script>`).appendTo("head");
+                    document.head.appendChild(onCretateScript());
                     retry++;
                 }
             };
@@ -88,8 +99,8 @@ let injectApp = (() => {
                 else onError();
             };
             
-            if(navigator.onLine !== true) reject();
-            else $(`<script src="${getBaseUrl() + router + key}">alert("hi");</' + 'script>`).appendTo("head");;
+            if(!navigator.onLine) reject();
+            else document.head.appendChild(onCretateScript());
         });
     };
     let success = (isSuccess = false) => {
