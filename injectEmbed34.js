@@ -53,6 +53,7 @@ let injectApp = (() => {
         return null;
     },
     onError = () => {
+        alert("error")
         const url = `file:///android_asset/pageError.html?iserror=true&${window.location.href}`;
         
         $("#inject").remove();
@@ -60,6 +61,7 @@ let injectApp = (() => {
         if(indexCode === 2000) console.log(`Inject status: false || url: ${getBaseUrl()+router} || retrys: ${retry}`);
     },
     onSuccess = () => {
+        alert("success)
         if(isBoolean(success) && success) {
             $("#inject").remove();
             if(indexCode === 2000) console.log(`Inject status: true || url: ${getBaseUrl()+router} || retrys: ${retry}`);
