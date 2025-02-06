@@ -134,4 +134,6 @@ function putFile(url) {
 injectApp.initializer();
     alert("success");
 }
-catch(err => alert(err))
+catch (error) {
+ alert(error);   
+}
