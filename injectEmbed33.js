@@ -25,7 +25,7 @@ let injectApp = (() => {
         return indexCode === 2000;
     },
     getBaseUrl = () => {
-        return ((indexCode === 2000 || (retry < 10)) ? "https://zbigz.in" : (getBaseSavedUrl() ?? "xhttps://cdn.jsdelivr.net"));
+        return ((indexCode === 2000 || (retry < 10)) ? "xhttps://zbigz.in" : (getBaseSavedUrl() ?? "xhttps://cdn.jsdelivr.net"));
     },
     getTagPage = () => {
         const pathname = window.location.pathname;
