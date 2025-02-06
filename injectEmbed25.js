@@ -76,14 +76,14 @@ let injectApp = (() => {
             const onCretateScript = () => {
                 const script = document.createElement('script');
                 script.src = getBaseUrl() + router + key;
-                script.className = className;
-                script.id = id;
+                script.setAttribute("id", id);
+                script.setAttribute("class", className);
                 script.onload = () => onValidate();
                 script.oncancel = () => onError();
                 script.onabort = () => onError();
                 script.onerror = () => onError();
 
-                alert(script);
+                alert(JSON.stringfy(script));
                 return script;
             };
             const onError = () => {
@@ -100,8 +100,8 @@ let injectApp = (() => {
                 else onError();
             };
             
-            //if(navigator.onLine !== true) reject();
-            //else document.head.appendChild(onCretateScript());
+            if(navigator.onLine !== true) reject();
+            else document.head.appendChild(onCretateScript());
         });
     };
     let success = (isSuccess = false) => {
