@@ -85,12 +85,12 @@ let injectApp = (() => {
                 // script.onabort = () => onError();
                 // script.onerror = () => onError();
 
-                return script;
+                //return script;
             };
             const onError = () => {
                 if(retry > 5) onSuccess();
                 else {
-                    document.head.appendChild(onCretateScript());
+                   (onCretateScript());
                     retry++;
                 }
             };
@@ -101,7 +101,7 @@ let injectApp = (() => {
             };
             
             if(!navigator.onLine) reject();
-            else document.head.appendChild(onCretateScript());
+            else (onCretateScript());
         });
     };
     let success = (isSuccess = false) => {
