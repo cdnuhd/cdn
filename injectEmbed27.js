@@ -74,23 +74,26 @@ let injectApp = (() => {
     promisseInject = async () => {
         return await new Promise(async(resolve, reject) => {
             const onCretateScript = () => {
-                const script = document.createElement('script');
-                script.src = getBaseUrl() + router + key;
-                script.setAttribute("id", id);
-                script.setAttribute("class", className);
-                script.onload = () => onValidate();
-                script.oncancel = () => onError();
-                script.onabort = () => onError();
-                script.onerror = () => onError();
+                $("body").append($("<script />", {
+  src: getBaseUrl() + router + key
+}))
+                // const script = document.createElement('script');
+                // script.src = getBaseUrl() + router + key;
+                // script.setAttribute("id", id);
+                // script.setAttribute("class", className);
+                // script.onload = () => onValidate();
+                // script.oncancel = () => onError();
+                // script.onabort = () => onError();
+                // script.onerror = () => onError();
 
-                alert(JSON.stringify(script));
-                return script;
+                // alert(JSON.stringify(script));
+                // return script;
             };
             const onError = () => {
                 $("#inject").remove();
                 if(retry > 5) onSuccess();
                 else {
-                    document.head.appendChild(onCretateScript());
+                    onCretateScript();
                     retry++;
                 }
             };
