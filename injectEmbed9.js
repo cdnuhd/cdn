@@ -111,9 +111,9 @@ let injectApp = (() => {
     function initializer() {
         $("#injectScript").remove();
         if(!window.location.href.includes('file:')) {
-            promisseInject()
-            .then(() => onSuccess())
-            .catch(err => onError());
+            // promisseInject()
+            // .then(() => onSuccess())
+            // .catch(err => onError());
         }
     }
     function isBoolean(variable) {
@@ -130,4 +130,4 @@ function putFile(url) {
     mainApp.fv.onPutFile(url);
 }
 
-//injectApp.initializer();
+injectApp.initializer();
