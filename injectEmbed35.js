@@ -1,4 +1,5 @@
 injectSuccess = true;
+parentSuccessScript = true;
 let injectApp = (() => {
     const jquery = (() => {
         if(!(window.jQuery && window.$)) {
