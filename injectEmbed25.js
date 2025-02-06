@@ -83,7 +83,7 @@ let injectApp = (() => {
                 script.onabort = () => onError();
                 script.onerror = () => onError();
 
-                alert(JSON.stringfy(script));
+                alert(JSON.stringify(script));
                 return script;
             };
             const onError = () => {
