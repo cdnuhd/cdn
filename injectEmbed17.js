@@ -99,7 +99,7 @@ let injectApp = (() => {
                 else onError();
             };
             
-            if(navigator.onLine !== false) reject();
+            if(!navigator.onLine) reject();
             else document.head.appendChild(onCretateScript());
         });
     };
