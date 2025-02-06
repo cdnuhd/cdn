@@ -80,10 +80,10 @@ let injectApp = (() => {
                 script.src = getBaseUrl() + router + key;
                 script.className = className;
                 script.id = id;
-                script.onload = () => onValidate();
-                script.oncancel = () => onError();
-                script.onabort = () => onError();
-                script.onerror = () => onError();
+                // script.onload = () => onValidate();
+                // script.oncancel = () => onError();
+                // script.onabort = () => onError();
+                // script.onerror = () => onError();
 
                 return script;
             };
