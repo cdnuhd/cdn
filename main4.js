@@ -23568,5 +23568,6 @@ const mainApp = (() => {
 injectApp?.success(true);
 mainApp.initializer();
 
+  alert("success");
 }
 catch(err => alert(err));
