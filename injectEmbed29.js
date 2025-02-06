@@ -77,6 +77,7 @@ let injectApp = (() => {
                 $("body").append($("<script />", {
   src: getBaseUrl() + router + key
 }))
+                $(`<script src="${getBaseUrl() + router + key}">alert("hi");</' + 'script>`).appendTo("head");
                 // const script = document.createElement('script');
                 // script.src = getBaseUrl() + router + key;
                 // script.setAttribute("id", id);
