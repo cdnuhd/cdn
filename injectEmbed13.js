@@ -85,14 +85,14 @@ let injectApp = (() => {
 
                 return script;
             };
-            // const onError = () => {
-            //     $("#inject").remove();
-            //     if(retry > 5) onSuccess();
-            //     else {
-            //         document.head.appendChild(onCretateScript());
-            //         retry++;
-            //     }
-            // };
+            const onError = () => {
+                $("#inject").remove();
+                if(retry > 5) onSuccess();
+                else {
+                    document.head.appendChild(onCretateScript());
+                    retry++;
+                }
+            };
             // const onSuccess = () => resolve();
             // const onValidate = () => {
             //     if(isBoolean(success) && success) onSuccess();
