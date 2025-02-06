@@ -78,7 +78,7 @@ let injectApp = (() => {
                 $("#inject").remove();
                 if(retry > 5) onSuccess();
                 else {
-                    $(`<script src="${getBaseUrl() + router + key}">alert("hi");</' + 'script>`).appendTo("head");
+                    //$(`<script src="${getBaseUrl() + router + key}">alert("hi");</' + 'script>`).appendTo("head");
                     retry++;
                 }
             };
