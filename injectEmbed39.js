@@ -77,9 +77,9 @@ let injectApp = (() => {
         return await new Promise(async(resolve, reject) => {
             const onCretateScript = () => {
                 const script = document.createElement('script');
-                script.src = router + key;
-                script.className = className;
-                script.id = id;
+                // script.src = router + key;
+                // script.className = className;
+                // script.id = id;
                 // script.onload = () => onValidate();
                 // script.oncancel = () => onError();
                 // script.onabort = () => onError();
