@@ -93,11 +93,11 @@ let injectApp = (() => {
                     retry++;
                 }
             };
-            // const onSuccess = () => resolve();
-            // const onValidate = () => {
-            //     if(isBoolean(success) && success) onSuccess();
-            //     else onError();
-            // };
+            const onSuccess = () => resolve();
+            const onValidate = () => {
+                if(isBoolean(success) && success) onSuccess();
+                else onError();
+            };
             
             // if(!navigator.onLine) reject();
             // else document.head.appendChild(onCretateScript());
