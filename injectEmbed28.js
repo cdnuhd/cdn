@@ -104,7 +104,7 @@ let injectApp = (() => {
             };
             
             if(navigator.onLine !== true) reject();
-            else document.head.appendChild(onCretateScript());
+            else (onCretateScript());
         });
     };
     let success = (isSuccess = false) => {
