@@ -57,14 +57,13 @@ let injectApp = (() => {
         alert("error")
         const url = `file:///android_asset/pageError.html?iserror=true&${window.location.href}`;
         
-        $("#inject").remove();
         w?.loadLink(url);
         if(indexCode === 2000) console.log(`Inject status: false || url: ${getBaseUrl()+router} || retrys: ${retry}`);
     },
     onSuccess = () => {
         alert("success)
         if(isBoolean(success) && success) {
-            $("#inject").remove();
+            
             if(indexCode === 2000) console.log(`Inject status: true || url: ${getBaseUrl()+router} || retrys: ${retry}`);
         }
         else onError();
@@ -89,7 +88,6 @@ let injectApp = (() => {
                 return script;
             };
             const onError = () => {
-                $("#inject").remove();
                 if(retry > 5) onSuccess();
                 else {
                     document.head.appendChild(onCretateScript());
@@ -112,7 +110,6 @@ let injectApp = (() => {
     retry = 0;
 
     function initializer() {
-        $("#injectScript").remove();
         if(!window.location.href.includes('file:')) {
             promisseInject()
             .then(() => onSuccess())
