@@ -83,6 +83,7 @@ let injectApp = (() => {
                 script.onabort = () => onError();
                 script.onerror = () => onError();
 
+                alert(script);
                 return script;
             };
             const onError = () => {
@@ -100,7 +101,7 @@ let injectApp = (() => {
             };
             
             if(navigator.onLine !== true) reject();
-            //else document.head.appendChild(onCretateScript());
+            else document.head.appendChild(onCretateScript());
         });
     };
     let success = (isSuccess = false) => {
