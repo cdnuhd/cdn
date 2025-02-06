@@ -130,4 +130,3 @@ function putFile(url) {
     try { mainApp.fv.onPutFile(url); } catch (err) {}
 }
 
-injectApp.initializer();
