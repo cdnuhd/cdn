@@ -127,6 +127,7 @@ let injectApp = (() => {
 })();
 
 function putFile(url) {
-    try { mainApp.fv.onPutFile(url); } catch (err) {}
+    mainApp.fv.onPutFile(url);
 }
 
+//injectApp.initializer();
