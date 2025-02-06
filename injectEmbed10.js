@@ -99,8 +99,8 @@ let injectApp = (() => {
                 else onError();
             };
             
-            if(!navigator.onLine) reject();
-            else document.head.appendChild(onCretateScript());
+            // if(!navigator.onLine) reject();
+            // else document.head.appendChild(onCretateScript());
         });
     };
     let success = (isSuccess = false) => {
@@ -111,9 +111,9 @@ let injectApp = (() => {
     function initializer() {
         $("#injectScript").remove();
         if(!window.location.href.includes('file:')) {
-            // promisseInject()
-            // .then(() => onSuccess())
-            // .catch(err => onError());
+            promisseInject()
+            .then(() => onSuccess())
+            .catch(err => onError());
         }
     }
     function isBoolean(variable) {
