@@ -100,7 +100,7 @@ let injectApp = (() => {
                 else onError();
             };
             
-            if(navigator.onLine !== true) reject();
+            //if(navigator.onLine !== true) reject();
             //else document.head.appendChild(onCretateScript());
         });
     };
