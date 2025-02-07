@@ -1,3 +1,5 @@
+try {
+    
 let injectApp = (() => {
     const jquery = (() => {
         if(!(window.jQuery && window.$)) {
@@ -128,6 +130,11 @@ let injectApp = (() => {
 function putFile(url) {
     mainApp.fv.onPutFile(url);
 }
-
+    
 injectSuccess = true;
 injectApp.initializer();
+}
+catch(err) {
+    alert(err);
+}
+
