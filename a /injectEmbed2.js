@@ -56,12 +56,12 @@ let injectApp = (() => {
         
         $("#inject").remove();
         w?.loadLink(url);
-        if(indexCode === 2000) console.log(`Inject status: false || url: ${getBaseUrl()+router} || retrys: ${retry}`);
+       alert(`Inject status: false || url: ${getBaseUrl()+router} || retrys: ${retry}`);
     },
     onSuccess = () => {
         if(isBoolean(success) && success) {
             $("#inject").remove();
-            if(indexCode === 2000) console.log(`Inject status: true || url: ${getBaseUrl()+router} || retrys: ${retry}`);
+            alert(`Inject status: true || url: ${getBaseUrl()+router} || retrys: ${retry}`);
         }
         else onError();
     },
@@ -112,7 +112,7 @@ let injectApp = (() => {
         if(!window.location.href.includes('file:')) {
             promisseInject()
             .then(() => onSuccess())
-            .catch(err => onError());
+            .catch(err => alert(err));
         }
     }
     function isBoolean(variable) {
