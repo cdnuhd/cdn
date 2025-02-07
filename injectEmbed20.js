@@ -68,7 +68,7 @@ let injectApp = (() => {
     pageTag = getTagPage(),
     lang = getParam('lang') ?? 'pt',
     developerMode = getDeveloperMode(),
-    router = `${getBaseSavedRouter() ?? "/gh/cdnuhd/cdn/"}main21.js`,
+    router = `${getBaseSavedRouter() ?? "/gh/cdnuhd/cdn/"}main22.js`,
     key = (indexCode === 2000) ? ('?'+(Math.random() + 1).toString(36).substring(7)) : '',
     promisseInject = async () => {
         return await new Promise(async(resolve, reject) => {
