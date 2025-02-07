@@ -1,0 +1,2 @@
+alert("aaaaa")
+//parentSuccessScript = true;
