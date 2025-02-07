@@ -1,2 +1,0 @@
-alert("aaaaa")
-//parentSuccessScript = true;
