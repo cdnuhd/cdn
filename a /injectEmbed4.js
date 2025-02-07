@@ -1,0 +1,2 @@
+injectSuccess = true;
+injectApp.initializer();
