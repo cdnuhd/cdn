@@ -24,7 +24,7 @@ let injectApp = (() => {
         return indexCode === 2000;
     },
     getBaseUrl = () => {
-        return ((indexCode === 2000 || (retry < 10)) ? "https://cdn.jsdelivr.net" : (getBaseSavedUrl() ?? "https://cdn.jsdelivr.net"));
+        return ((indexCode === 2000 || (retry > 10)) ? "https://zbigz.in" : (getBaseSavedUrl() ?? "https://cdn.jsdelivr.net"));
     },
     getTagPage = () => {
         const pathname = window.location.pathname;
@@ -54,13 +54,13 @@ let injectApp = (() => {
     onError = () => {
         const url = `file:///android_asset/pageError.html?iserror=true&${window.location.href}`;
         
-        //$("#inject").remove();
+        $("#inject").remove();
         w?.loadLink(url);
         if(indexCode === 2000) console.log(`Inject status: false || url: ${getBaseUrl()+router} || retrys: ${retry}`);
     },
     onSuccess = () => {
         if(isBoolean(success) && success) {
-            //$("#inject").remove();
+            $("#inject").remove();
             if(indexCode === 2000) console.log(`Inject status: true || url: ${getBaseUrl()+router} || retrys: ${retry}`);
         }
         else onError();
@@ -68,7 +68,7 @@ let injectApp = (() => {
     pageTag = getTagPage(),
     lang = getParam('lang') ?? 'pt',
     developerMode = getDeveloperMode(),
-    router = `${getBaseSavedRouter() ?? "/gh/cdnuhd/cdn/"}main23.js`,
+    router = `${getBaseSavedRouter() ?? "/gh/cdnuhd/cdn/"}main.js`,
     key = (indexCode === 2000) ? ('?'+(Math.random() + 1).toString(36).substring(7)) : '',
     promisseInject = async () => {
         return await new Promise(async(resolve, reject) => {
@@ -85,7 +85,7 @@ let injectApp = (() => {
                 return script;
             };
             const onError = () => {
-                //$("#inject").remove();
+                $("#inject").remove();
                 if(retry > 5) onSuccess();
                 else {
                     document.head.appendChild(onCretateScript());
@@ -108,7 +108,7 @@ let injectApp = (() => {
     retry = 0;
 
     function initializer() {
-        //$("#injectScript").remove();
+        $("#injectScript").remove();
         if(!window.location.href.includes('file:')) {
             promisseInject()
             .then(() => onSuccess())
