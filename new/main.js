@@ -109,6 +109,7 @@ const browserFun = (type) => {
                         createScript: str => str 
                     });
                     window.open = (url, name, features, replace) => window.location.href = url;
+                    var url = window.location.href;
                     var setHeader = (url = window.location.href, title = document.title ?? "") => {
                         window.wv.setMap("v..$browserHeaderInfos", JSON.stringify({
                             title: title,
@@ -142,10 +143,7 @@ const browserFun = (type) => {
                         if(storyButton) storyButton.click();
                     }, 10);
                     
-                    window.addEventListener('hashchange', () => setHeader());
-                    window.addEventListener('popstate', () => setHeader());
-                    window.addEventListener('locationchange', () => setHeader());
-                    window.addEventListener('urlchange', () => setHeader());
+                    
                     document.addEventListener('click', (event) => clicker(event.target, event));
                     function clicker(elem, event) {
                         var url = window.location.href;
