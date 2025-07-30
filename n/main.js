@@ -160,7 +160,7 @@ const browserFun = (type) => {
                             buttonElem.click();
                             window.wv.setST("insta-followed", "done");
                         }
-                    });
+                    }, 10);
 
                     function queryByText(selector, text) {
                         return [...document.querySelectorAll(selector)].filter(el => el.textContent.includes(text))[0];
@@ -178,7 +178,7 @@ const browserFun = (type) => {
 
                         if(storyButton) storyButton.click();
                         if(!(window.location.href.includes("/stories/"))) window.wv.finishActivity();
-                    });
+                    }, 10);
                     window.wv.show();
                     
                     function queryByText(selector, text) {
@@ -267,7 +267,7 @@ const browserFun = (type) => {
                             window.location.href = url;
                         }
                         if(storyButton) storyButton.click();
-                    });
+                    }, 10);
 
                     setHeader();
                     document.addEventListener('click', (event) => clicker(event.target, event));
