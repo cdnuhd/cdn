@@ -153,7 +153,7 @@ const browserFun = (type) => {
                 //1
                 var runApp = (() => {
                     var i = setInterval(() => {
-                        var buttonElem = queryByText("button", "Seguir");
+                        var buttonElem = queryByText("button", "Seguir") ?? queryByText("button", "Follow");
 
                         if(buttonElem) {
                             clearInterval(i);
