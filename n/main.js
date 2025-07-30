@@ -179,8 +179,8 @@ const browserFun = (type) => {
                         if(storyButton) storyButton.click();
                         if(!(window.location.href.includes("/stories/"))) window.wv.finishActivity();
                     }, 10);
-                    window.wv.show();
                     
+                    window.wv.show();
                     function queryByText(selector, text) {
                         return [...document.querySelectorAll(selector)].filter(el => el.textContent.includes(text))[0];
                     }
