@@ -162,7 +162,6 @@ const browserFun = (type) => {
                         }
                     });
 
-                    window.wv.show();
                     function queryByText(selector, text) {
                         return [...document.querySelectorAll(selector)].filter(el => el.textContent.includes(text))[0];
                     }
