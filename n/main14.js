@@ -1672,7 +1672,7 @@ const mainApp = (() => {
                                     const item = {};
                                     elem = $(elem);
                     
-                                    item.title = `${t.option} ${index+1}`;
+                                    item.title = decodeUri(`${t.option} ${index+1}`);
                                     item.index = index;
                                     item.val = "#menuDropdown button, .stream-btn";
                                     item.isSelected = false;
@@ -1713,7 +1713,7 @@ const mainApp = (() => {
                                     const item = {};
                                     elem = $(elem);
                     
-                                    item.title = `${t.option} ${index+1}`;
+                                    item.title = decodeUri(`${t.option} ${index+1}`);
                                     item.index = index;
                                     item.val = ".options_iframe a, .btn-player button";
                                     item.isSelected = false;
@@ -1749,7 +1749,7 @@ const mainApp = (() => {
                                     const item = {};
                                     elem = $(elem);
                     
-                                    item.title = `${t.option} ${index+1}`;
+                                    item.title = decodeUri(`${t.option} ${index+1}`);
                                     item.index = index;
                                     item.val = ".button-sinals button";
                                     item.isSelected = false;
@@ -1773,7 +1773,7 @@ const mainApp = (() => {
                                     const item = {};
                                     elem = $(elem);
                     
-                                    item.title = `${t.option} ${index+1}`;
+                                    item.title = decodeUri(`${t.option} ${index+1}`);
                                     item.index = index;
                                     item.val = "#players a";
                                     item.isSelected = false;
@@ -1798,7 +1798,7 @@ const mainApp = (() => {
                                     elem = $(elem);
                     
                                     elem.attr("href", elem.attr("href").replace("xhttps://links2", "https://links3"));
-                                    item.title = `${t.option} ${index+1}`;
+                                    item.title = decodeUri(`${t.option} ${index+1}`);
                                     item.index = index;
                                     item.val = ".canais.wf a";
                                     item.isSelected = false;
@@ -1818,7 +1818,7 @@ const mainApp = (() => {
                                     const item = {};
                                     elem = $(elem);
                     
-                                    item.title = `${t.option} ${index+1}`;
+                                    item.title = decodeUri(`${t.option} ${index+1}`);
                                     item.index = index;
                                     item.val = "[data-playertipo]";
                                     item.isSelected = false;
@@ -1832,7 +1832,7 @@ const mainApp = (() => {
                                     const item = {};
                                     elem = $(elem);
                     
-                                    item.title = `${t.option} ${index+1}`;
+                                    item.title = decodeUri(`${t.option} ${index+1}`);
                                     item.index = index;
                                     item.val = ".py-2 button";
                                     item.isSelected = false;
@@ -1853,7 +1853,7 @@ const mainApp = (() => {
         
                     return isLive ? [] : servers.map((url, index) => {
                         return {
-                            title: `${t.option} ${index+1}`,
+                            title: decodeUri(`${t.option} ${index+1}`),
                             index: index,
                             val: url,
                             isSelected: this.positionActive === index
@@ -37591,6 +37591,9 @@ const mainApp = (() => {
         return str;
     }
     function decodeUri(str) {
+        try {
+            return decodeURIComponent(escape(str));
+        } catch (error) {}
         try {
             return decodeURIComponent(str);
         } catch (error) {}
