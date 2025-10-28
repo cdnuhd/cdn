@@ -1525,13 +1525,11 @@ const mainApp = (() => {
             };
         }
         onShow () {
-            try {
-                
             if(valCheck(this.embedType)) this.onCast();
             else {
                 if(this.finalType === "browser") w?.show();
                 else {
-                    // if(!(window.location.href.includes("crazygames"))) this.onApplyButtons();
+                    if(!(window.location.href.includes("crazygames"))) this.onApplyButtons();
                     this.videoElem.blockFullScreen();
                     this.iframeElem.blockFullScreen();
                     if(this.finalType === "embed") skipAds();
@@ -1539,9 +1537,6 @@ const mainApp = (() => {
                 }
             }
             clearTimeout(this.validTimer);
-            } catch (error) {
-                w?.showToast(error);
-            }
         }
         onCast () {
             let url = $("video").attr("src") ?? $("video source").attr("src") ?? this.videoHref;
@@ -1857,21 +1852,21 @@ const mainApp = (() => {
         
                     return isLive ? [] : list();
                 };
-                const playerServers = () => {
-                    const playlist = callback.userDB.getItem(v.storePlaylist) ?? {};
-                    const servers = parseJSON(playlist?.servers ?? []) ?? [];
+                // const playerServers = () => {
+                //     const playlist = callback.userDB.getItem(v.storePlaylist) ?? {};
+                //     const servers = parseJSON(playlist?.servers ?? []) ?? [];
         
-                    return isLive ? [] : servers.map((url, index) => {
-                        return {
-                            title: decodeURIComponent(escape(`${t.option} ${index+1}`)),
-                            index: index,
-                            val: url,
-                            isSelected: this.positionActive === index
-                        }
-                    });
-                };
+                //     return isLive ? [] : servers.map((url, index) => {
+                //         return {
+                //             title: decodeURIComponent(escape(`${t.option} ${index+1}`)),
+                //             index: index,
+                //             val: url,
+                //             isSelected: this.positionActive === index
+                //         }
+                //     });
+                // };
                 
-                this.onApplyStyle(this.videosStyleSTypes.buttons, () => this.bodyElem.appendHtml(v.cardButtonsOptions, { listOptions: playerOptions(), listServers: playerServers() }, () => {
+                this.onApplyStyle(this.videosStyleSTypes.buttons, () => this.bodyElem.appendHtml(v.cardButtonsOptions, { listOptions: playerOptions(), listServers: [] }, () => {
                     const run = () => {
                         const buttonsElem = $(".cast-buttons");
                         const sectionElem = $(".cast-buttons > div > section");
