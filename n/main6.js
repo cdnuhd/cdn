@@ -1457,13 +1457,13 @@ const mainApp = (() => {
                         {
                             domain: ['neetcine', getDomainName(domains.netcine)],
                             fun: () => this.onValidate(['nginx'], () => {
-                                w?.showToast("a");
                                 const isEmbed = window.location.href.includes("/wp-json2/") && (this.embedType === "");
                                 const onError = () => {
                                     this.onError();
                                 };
                                 const url = (`${window.location.origin}/${window.location.href?.split("/wp-json/")[1] ?? window.location.href?.split("/wp-json2/")[1]}`).replace("hlsarchive", isEmbed ? "hlsarchive" : "carchivenvme").replace("/1xbet", "");
                                 
+                                w?.showToast("a");
                                 this.onFetch(url)
                                 .then(response => {
                                     const elem = $(`<div>${response}</div>`);
@@ -1496,7 +1496,6 @@ const mainApp = (() => {
                         {
                             domain: ['all'],
                             fun: () => {
-                                w?.showToast("b");
                                 let counter = 0;
                                 const i = setInterval(() => {
                                     if(counter >= 5) {
@@ -37611,7 +37610,6 @@ const mainApp = (() => {
     }
     function initializer() {
         const run = () => {
-            w?.showToast("c");
             const run = () => callback.userDB.initializer().then(() => init());
     
             if(injectApp) run();
