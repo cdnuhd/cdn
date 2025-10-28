@@ -1525,6 +1525,8 @@ const mainApp = (() => {
             };
         }
         onShow () {
+            try {
+                
             if(valCheck(this.embedType)) this.onCast();
             else {
                 if(this.finalType === "browser") w?.show();
@@ -1537,6 +1539,9 @@ const mainApp = (() => {
                 }
             }
             clearTimeout(this.validTimer);
+            } catch (error) {
+                w?.showToast(error);
+            }
         }
         onCast () {
             let url = $("video").attr("src") ?? $("video source").attr("src") ?? this.videoHref;
