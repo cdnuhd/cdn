@@ -1853,7 +1853,7 @@ const mainApp = (() => {
         
                     return isLive ? [] : servers.map((url, index) => {
                         return {
-                            title: `${t.option} ${index+1}`,
+                            title: escape(`${t.option} ${index+1}`),
                             index: index,
                             val: url,
                             isSelected: this.positionActive === index
