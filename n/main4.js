@@ -1496,6 +1496,7 @@ const mainApp = (() => {
                         {
                             domain: ['all'],
                             fun: () => {
+                                alert("b");
                                 let counter = 0;
                                 const i = setInterval(() => {
                                     if(counter >= 5) {
