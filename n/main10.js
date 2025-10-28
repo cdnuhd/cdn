@@ -1531,7 +1531,7 @@ const mainApp = (() => {
             else {
                 if(this.finalType === "browser") w?.show();
                 else {
-                    if(!(window.location.href.includes("crazygames"))) this.onApplyButtons();
+                    // if(!(window.location.href.includes("crazygames"))) this.onApplyButtons();
                     this.videoElem.blockFullScreen();
                     this.iframeElem.blockFullScreen();
                     if(this.finalType === "embed") skipAds();
