@@ -3165,8 +3165,8 @@ const mainApp = (() => {
             //         this.bodyElem.html(html).ready(run());
             //     }, this.videosStyleSTypes.redecanais, false, true, html);
             // };
-            // const url = decodeURIComponent(html?.split('baixar="')[1].split('r=https://')[1]?.split('"')[0] ?? "");
-            const url = decodeURIComponent(html?.split('baixar="')[1]?.split('"')[0] ?? "");
+            // const url = decodeUri(html?.split('baixar="')[1].split('r=https://')[1]?.split('"')[0] ?? "");
+            const url = decodeUri(html?.split('baixar="')[1]?.split('"')[0] ?? "");
             
             if(url !== "") {
                 this.onRefresh(url, true);
@@ -3231,8 +3231,8 @@ const mainApp = (() => {
         }
         onParseJSON (str) {
             try {
-                if(this.onIsBase64(str)) return JSON.parse(decodeURIComponent(atob(str))); 
-                return JSON.parse(decodeURIComponent(str));
+                if(this.onIsBase64(str)) return JSON.parse(decodeUri(atob(str))); 
+                return JSON.parse(decodeUri(str));
             } catch (err) {}
             return null;
         }
@@ -3517,7 +3517,7 @@ const mainApp = (() => {
         }
         parseJSON(data) {
             try {
-                return JSON.parse(decodeURIComponent(atob(data)));
+                return JSON.parse(decodeUri(atob(data)));
             } catch(err) {}
             return data;
         }
@@ -8082,7 +8082,7 @@ const mainApp = (() => {
             }
             case v.cardPosterChannelSaved: {
                 const itemEncodedData = btoa(encodeURIComponent(JSON.stringify(data)));
-                const itemId =  textNormalize(decodeURIComponent(data.itemId ?? '')).replace(/ /g, "");
+                const itemId =  textNormalize(decodeUri(data.itemId ?? '')).replace(/ /g, "");
                 const poster = data.channelLogo;
     
                 return `<div class="item-content-channel" data-id="${itemId}" data-details="${itemEncodedData}" data-action="${v.actionOpenSavedChannel}">
@@ -8478,7 +8478,7 @@ const mainApp = (() => {
                 const channelLogo = data.channelLogo ?? '';
                 const channelGuide = data.channelGuide ?? '';
 
-                return `<div class="item-content-full-flex disabled inactive" data-id="${textNormalize(decodeURIComponent(channelTitle)).replace(/ /g, "")}" data-details="${itemEncodedData}" data-action="${v.actionOpenTvPlayerOptions}">
+                return `<div class="item-content-full-flex disabled inactive" data-id="${textNormalize(decodeUri(channelTitle)).replace(/ /g, "")}" data-details="${itemEncodedData}" data-action="${v.actionOpenTvPlayerOptions}">
                     <div class="item item-channel">
                         <section class="channel-infos">
                             ${requestHtml(v.imgContentElem, {
@@ -8931,9 +8931,9 @@ const mainApp = (() => {
             case v.cardHistoryText: {
                 const itemId = data.itemId ?? '';
     
-                return `<section class="section-line" data-search-val="${decodeURIComponent(itemId)}">
+                return `<section class="section-line" data-search-val="${decodeUri(itemId)}">
                     <button class="btn medium empty no-left-space"><img src="${i.historyDarken}"></button>
-                    <button class="btn expanded text-normal text-ellipsis submit" data-action="${v.actionOpenSearchBox}">${decodeURIComponent(itemId)}</button>
+                    <button class="btn expanded text-normal text-ellipsis submit" data-action="${v.actionOpenSearchBox}">${decodeUri(itemId)}</button>
                     <button class="btn medium empty no-right-space" data-action="${v.actionOpenSearchBox}"><img src="${i.arrowUpDarken}"></button>
                 </section>`;
             }
@@ -14762,7 +14762,7 @@ const mainApp = (() => {
             }
             case v.cardPosterChannel: {
                 const itemEncodedData = btoa(encodeURIComponent(JSON.stringify(data)));
-                const itemId = textNormalize(decodeURIComponent(data.channelTitle ?? '')).replace(/ /g, "");
+                const itemId = textNormalize(decodeUri(data.channelTitle ?? '')).replace(/ /g, "");
                 const poster = data.channelLogo;
     
                 return `<div class="item-content-channel" data-id="${itemId}" data-details="${itemEncodedData}" data-action="${v.actionOpenTvPlayerOptions}">
@@ -14870,7 +14870,7 @@ const mainApp = (() => {
                 const itemId = data.itemId ?? "";
                 const itemTitle = data.val ?? "";
     
-                return `<button class="btn mini bg-darken-btn" style="font-weight: 500;" data-search-val="${decodeURIComponent(itemTitle)}" data-action="${v.actionOpenSearchBox}"><span class="submit" data-action="${v.actionOpenSearchBox}">${itemTitle}</span></button>`;
+                return `<button class="btn mini bg-darken-btn" style="font-weight: 500;" data-search-val="${decodeUri(itemTitle)}" data-action="${v.actionOpenSearchBox}"><span class="submit" data-action="${v.actionOpenSearchBox}">${itemTitle}</span></button>`;
             }
             case v.cardButtonsOptions: {
                 const selectorHtml = requestHtml(v.cardSelector, [...(data?.listOptions ?? []), ...(data?.listServers ?? [])?.filter(item => (isArray((data?.listOptions ?? [])) && (data?.listOptions ?? []).length > 0) ? (!item?.val?.includes(getDomainName(window.location.href)) ?? true) : true)]) ?? "";
@@ -15157,7 +15157,7 @@ const mainApp = (() => {
                 const attrs = data?.attrs ?? '';
                 const text = data?.text ?? '';
     
-                return `<button class="${className}" ${attrs}>${decodeURIComponent(text)}${attrs.includes(`="25"`) ? '<div class="prs"></div>' : ''}</button>`;
+                return `<button class="${className}" ${attrs}>${decodeUri(text)}${attrs.includes(`="25"`) ? '<div class="prs"></div>' : ''}</button>`;
             }
             case v.horizontalScrollerElem: {
                 const attrs = data.attrs ?? '';
@@ -15229,7 +15229,7 @@ const mainApp = (() => {
                         resultHtml += requestHtml(v.btnElem, {
                             class: (className) + (isLeftIcon ? ' icon-left' : '') + (isRightIcon ? ' icon-right' : '') + (!valCheck(text) ? ' empty' : ''),
                             attrs: attrs,
-                            text: imgLeft + decodeURIComponent(text) + imgRight + imgCenter
+                            text: imgLeft + decodeUri(text) + imgRight + imgCenter
                         });
                     });
                 }
@@ -18525,7 +18525,7 @@ const mainApp = (() => {
             case v.requestActionVoiceRecover: {
                 val = data.val ?? '';
                 
-                if(valCheck(val)) bodyElem.append(`<div data-search-val="${decodeURIComponent(val)}" id="autoSubmit"><button class="submit" data-action="${v.actionOpenSearchBox}">${val}</button></div>`).ready(function() { 
+                if(valCheck(val)) bodyElem.append(`<div data-search-val="${decodeUri(val)}" id="autoSubmit"><button class="submit" data-action="${v.actionOpenSearchBox}">${val}</button></div>`).ready(function() { 
                     bodyElem.find('#autoSubmit .submit').trigger('click').parent(0).remove(); 
                 });
                 break;
@@ -27663,7 +27663,7 @@ const mainApp = (() => {
     };
     const decodeURIFormat = (text) => {
         try {
-            return decodeURIComponent(escape(text ?? ''));
+            return decodeUri(escape(text ?? ''));
         } catch(err) {}
         return text;
     };
@@ -29825,7 +29825,7 @@ const mainApp = (() => {
                 case v.actionToggleSaveChannelItem: {
                     channelElem = getViewByAttr(clickedElem, '[data-details]');
                     const itemDecodeData = (parseJSON(channelElem.attr('data-details') ?? 'e30=') ?? {});
-                    itemDecodeData.itemId = textNormalize(decodeURIComponent(itemDecodeData.channelTitle)).replace(/ /g, "");
+                    itemDecodeData.itemId = textNormalize(decodeUri(itemDecodeData.channelTitle)).replace(/ /g, "");
     
                     callback.userDB.myListChannelsStore.toggleItemData(itemDecodeData);
                     clickedElem.find("img").attr("src", (clickedElem.find("img").attr("src") === i.save) ? i.saved : i.save);
@@ -30199,7 +30199,7 @@ const mainApp = (() => {
                     const playerElem = getViewByAttr(clickedElem, '[data-url]');
                     const playerType = playerElem.attr('data-type');
                     const embed = (/true/).test(playerElem.attr('data-embed') ?? 'false');
-                    let url = decodeURIComponent(decrypt("crypt", (playerElem.attr('data-url') ?? '')));
+                    let url = decodeUri(decrypt("crypt", (playerElem.attr('data-url') ?? '')));
                     url = (!url.includes("https://")) ? `https:///${url}` : url;
                     
                     if(playerType === "tv" && (url.includes(domains.vizer) || url.includes(domains.pobreflix) || url.includes(domains.netcine))) {
@@ -30251,7 +30251,7 @@ const mainApp = (() => {
                         if(playerType === "tv") {
                             let htmlElem = "";
                             $("[data-url]").each(function() {
-                                const url = decodeURIComponent(decrypt("crypt", $(this).attr("data-url") ?? ""));
+                                const url = decodeUri(decrypt("crypt", $(this).attr("data-url") ?? ""));
     
                                 if(!(url.includes(domains.vizer) || url.includes(domains.pobreflix) || url.includes(domains.netcine))) htmlElem += $(this).prop("outerHTML");
                             });
@@ -30279,7 +30279,7 @@ const mainApp = (() => {
                     const actionType = clickedElem.attr("data-val") ?? "cast";
                     const embed = (/true/).test(playerElem.attr('data-embed') ?? 'false');
                     const type = playerElem.attr('data-type') ?? v.playerTv;
-                    let url = decodeURIComponent(decrypt("crypt", ((type === v.playerTv) ? $('[data-embed]').last().attr('data-url') : playerElem.attr('data-url') ?? '')));
+                    let url = decodeUri(decrypt("crypt", ((type === v.playerTv) ? $('[data-embed]').last().attr('data-url') : playerElem.attr('data-url') ?? '')));
                     // url = url.includes(domains.mixdrop) ? (url?.split("?")[0].replace("/e/", "/f/").replace("?download", "")+"?download") : url;
                     url = (!url.includes("https://")) ? `https:///${url}` : url;
                     const run = () => {
@@ -31061,8 +31061,8 @@ const mainApp = (() => {
                 case v.actionDownMagnet:
                 case v.actionPlayMagnet:
                 case v.actionShareMagnet: {
-                    let magnetLink = decodeURIComponent(decrypt("crypt", (clickedElem.attr("data-url") ?? $(getViewByAttr(clickedElem, "[data-url]")).attr("data-url") ?? "")));
-                    const magnetTitle = decodeURIComponent(clickedElem.attr("data-title") ?? $(getViewByAttr(clickedElem, "[data-title]")).attr("data-title") ?? "");
+                    let magnetLink = decodeUri(decrypt("crypt", (clickedElem.attr("data-url") ?? $(getViewByAttr(clickedElem, "[data-url]")).attr("data-url") ?? "")));
+                    const magnetTitle = decodeUri(clickedElem.attr("data-title") ?? $(getViewByAttr(clickedElem, "[data-title]")).attr("data-title") ?? "");
                     const titleDownload = textNormalize(magnetTitle).trim().replace(/(\r\n|\n|\r)/gm, "").replace(/[^\w\s]/gi, '').toLowerCase().replace(/ +/g, '-');
                     // const magnetLinkTitle = (magnetLink?.split("dn=")[1]?.split("tr=")[0] ?? "").trim().replace(/[^0-9a-z-A-Z ]/g, "");
                     // magnetLink = magnetLink.startsWith("http") ? magnetLink : (`${magnetLink?.split("dn=")[0]}dn=${magnetLinkTitle}&tr=${magnetLink?.split("tr=")[1]}`).replace(/&amp;/g, "&");
@@ -32321,7 +32321,7 @@ const mainApp = (() => {
                             
                             if(searchListElem[0]) {
                                 searchList.map((data, index) => {
-                                    const elem = searchListElem.find(`.vertical-scroller > section > [data-search-val='${decodeURIComponent(data.itemId)}']`);
+                                    const elem = searchListElem.find(`.vertical-scroller > section > [data-search-val='${decodeUri(data.itemId)}']`);
                                     if(!elem[0]) {
                                         searchListElem.find('.vertical-scroller > section').prependHtml(v.cardHistoryText, data)
                                     }
@@ -35641,19 +35641,19 @@ const mainApp = (() => {
                     case v.fontMagnet: {
                         try {
                             const searchInfo = parseJSON(getWithExpiry(v.keyInfoSearch) ?? {})
-                            const title = textNormalize(decodeURIComponent(searchInfo?.itemTmdbTitle ?? "")).trim().replace(/[^a-zA-Z0-9 ]/g, "").split(" ").splice(-1)[0];
-                            const title1 = textNormalize(decodeURIComponent(searchInfo?.itemTmdbOriginal ?? "")).trim().replace(/[^a-zA-Z0-9 ]/g, "").split(" ").splice(-1)[0];
-                            const title2 = textNormalize(decodeURIComponent(searchInfo?.itemTitle ?? "")).trim().replace(/[^a-zA-Z0-9 ]/g, "").split(" ").splice(-1)[0];
+                            const title = textNormalize(decodeUri(searchInfo?.itemTmdbTitle ?? "")).trim().replace(/[^a-zA-Z0-9 ]/g, "").split(" ").splice(-1)[0];
+                            const title1 = textNormalize(decodeUri(searchInfo?.itemTmdbOriginal ?? "")).trim().replace(/[^a-zA-Z0-9 ]/g, "").split(" ").splice(-1)[0];
+                            const title2 = textNormalize(decodeUri(searchInfo?.itemTitle ?? "")).trim().replace(/[^a-zA-Z0-9 ]/g, "").split(" ").splice(-1)[0];
 
                             parseJSON(content.split("--")[1]).map(item => {
                                 let itemUrl = item?.url ?? "";
-                                const itemTitle = textNormalize(decodeURIComponent(item?.title ?? "")).trim().replace(/[^a-zA-Z0-9 ]/g, "");
+                                const itemTitle = textNormalize(decodeUri(item?.title ?? "")).trim().replace(/[^a-zA-Z0-9 ]/g, "");
                                 const isValid = (valCheck(itemUrl) && itemUrl.includes("https://"));
                                 const isNotDomain = !(itemUrl.includes(getDomainName(domains.google)) || itemUrl.includes(getDomainName(domains.yahoo)) || itemUrl.includes(getDomainName(domains.bing)) || itemUrl.includes(getDomainName(domains.yandex)));
                                 const isTorrent = (itemTitle.includes("torrent") || itemUrl.includes("torrent"));
                                 const isTitle = (valCheck(title) && itemTitle.includes(title)) || (valCheck(title1) && itemTitle.includes(title1)) || (valCheck(title2) && itemTitle.includes(title2));
 
-                                if(isValid && itemUrl.includes("RU=")) itemUrl = decodeURIComponent(itemUrl?.split("RU=")[1] ?? itemUrl);
+                                if(isValid && itemUrl.includes("RU=")) itemUrl = decodeUri(itemUrl?.split("RU=")[1] ?? itemUrl);
                                 if(url.includes("bludv") && isTitle) list.add({ title: itemTitle.replace(/[^0-9a-z-A-Z ]/g, ""), url: itemUrl });
                                 else if((url.includes("btdig") && isValid && isTitle) || (isValid && isTorrent && isTitle && isNotDomain)) list.add({ title: itemTitle.replace(/[^0-9a-z-A-Z ]/g, ""), url: itemUrl }); 
                             });
@@ -36671,7 +36671,7 @@ const mainApp = (() => {
                                 const elem = $(`<div>${content}</div>`);
                                 let html;
                                 
-                                if(content.startsWith("magnet")) list.add(encodeURIComponent(decodeURIComponent(content).replace(/<(?:.|\s)*?>/g, "")));
+                                if(content.startsWith("magnet")) list.add(encodeURIComponent(decodeUri(content).replace(/<(?:.|\s)*?>/g, "")));
                                 else {
                                     elem.find("a").each(function() {
                                         const el = $(this);
@@ -36682,12 +36682,12 @@ const mainApp = (() => {
                                     html = elem.propH();
                                     html = valCheck(html) ? html : content;
 
-                                    html.replace(urlRegex, (magnet) => list.add(encodeURIComponent(decodeURIComponent(magnet?.split('">')[0] ?? magnet).replace(/<(?:.|\s)*?>/g, ""))));
+                                    html.replace(urlRegex, (magnet) => list.add(encodeURIComponent(decodeUri(magnet?.split('">')[0] ?? magnet).replace(/<(?:.|\s)*?>/g, ""))));
                                 }
 
                                 list = list.filter(magnetLink => magnetLink.length > 25).map(magnetLink => {
                                     magnetLink = decodeUri(magnetLink)?.replace(/&amp;#038;/g, "&")?.replace(/&amp;/g, "&");
-                                    const playerTitle = decodeURIComponent(decodeURIComponent(magnetLink)?.split("dn=")[1]?.split("&")[0] ?? `${title} - ${year} 1080p WEBRip DUAL`).replace(/\./g, " ").replace(/\+/g, " ").replace(/%20/g, " ").replace(/%26/g, " ").replace(/<(?:.|\s)*?>/g, "");
+                                    const playerTitle = decodeUri(decodeUri(magnetLink)?.split("dn=")[1]?.split("&")[0] ?? `${title} - ${year} 1080p WEBRip DUAL`).replace(/\./g, " ").replace(/\+/g, " ").replace(/%20/g, " ").replace(/%26/g, " ").replace(/<(?:.|\s)*?>/g, "");
                                     const playerEmbed = false;
                                     const playerUrl = magnetLink;
                                     const playerHash = playerUrl?.split("magnet%3A%3Fxt%3Durn%3Abtih%3A")[1]?.split("%")[0] ?? "";
@@ -36699,7 +36699,7 @@ const mainApp = (() => {
                                         hash: playerHash
                                     };
                                 }).filter(item => {
-                                    const isMagnet = (decodeURIComponent(item?.url)?.match(/magnet:\?xt=urn:[a-z0-9]+:[a-z0-9]{32}/i) !== null);
+                                    const isMagnet = (decodeUri(item?.url)?.match(/magnet:\?xt=urn:[a-z0-9]+:[a-z0-9]{32}/i) !== null);
                                     const isHash = valCheck(item?.hash);
                                     const isSeason = valCheck(se) ? (
                                         textNormalize(item?.title).includes(`temporada ${s}`) ||
@@ -36727,7 +36727,7 @@ const mainApp = (() => {
                                 const season = ((se?.split("s")[1]?.split("e")[0]) ?? "").twoDigits() ?? "";
                                 // let html;
                                 
-                                // if(content.startsWith("magnet")) list.add(encodeURIComponent(decodeURIComponent(content).replace(/<(?:.|\s)*?>/g, "")));
+                                // if(content.startsWith("magnet")) list.add(encodeURIComponent(decodeUri(content).replace(/<(?:.|\s)*?>/g, "")));
                                 // else {
                                 //     elem.find("a").each(function() {
                                 //         const el = $(this);
@@ -36738,7 +36738,7 @@ const mainApp = (() => {
                                 //     html = elem.propH();
                                 //     html = valCheck(html) ? html : content;
 
-                                //     html.replace(urlRegex, (magnet) => list.add(encodeURIComponent(decodeURIComponent(magnet?.split('">')[0] ?? magnet).replace(/<(?:.|\s)*?>/g, ""))));
+                                //     html.replace(urlRegex, (magnet) => list.add(encodeURIComponent(decodeUri(magnet?.split('">')[0] ?? magnet).replace(/<(?:.|\s)*?>/g, ""))));
                                 // }
 
                                 
@@ -36758,7 +36758,7 @@ const mainApp = (() => {
                                 });
                                 list = list.filter(magnetLink => magnetLink.length > 25).map(magnetLink => {
                                     magnetLink = decodeUri(magnetLink)?.replace(/&amp;#038;/g, "&")?.replace(/&amp;/g, "&").replace(/"/g, "");
-                                    const playerTitle = decodeURIComponent(decodeURIComponent(magnetLink)?.split("dn=")[1]?.split("&")[0] ?? `${title} - ${year} 1080p WEBRip DUAL`).replace(/\+/g, " ").replace(/%20/g, " ").replace(/%26/g, " ").replace(/<(?:.|\s)*?>/g, "");
+                                    const playerTitle = decodeUri(decodeUri(magnetLink)?.split("dn=")[1]?.split("&")[0] ?? `${title} - ${year} 1080p WEBRip DUAL`).replace(/\+/g, " ").replace(/%20/g, " ").replace(/%26/g, " ").replace(/<(?:.|\s)*?>/g, "");
                                     const playerEmbed = false;
                                     const playerUrl = magnetLink;
                                     const playerHash = playerUrl?.split("magnet%3A%3Fxt%3Durn%3Abtih%3A")[1]?.split("%")[0] ?? "";
@@ -36770,7 +36770,7 @@ const mainApp = (() => {
                                         hash: playerHash
                                     };
                                 }).filter(item => {
-                                    const isMagnet = (decodeURIComponent(item?.url)?.match(/magnet:\?xt=urn:[a-z0-9]+:[a-z0-9]{32}/i) !== null);
+                                    const isMagnet = (decodeUri(item?.url)?.match(/magnet:\?xt=urn:[a-z0-9]+:[a-z0-9]{32}/i) !== null);
                                     const isHash = valCheck(item?.hash);
                                     const isSeason = valCheck(se) ? (
                                         textNormalize(item?.title).includes(`temporada ${s}`) ||
@@ -37585,7 +37585,7 @@ const mainApp = (() => {
     }
     function encodedUri(str) {
         try {
-            if(typeof str == "string" && decodeURIComponent(str) !== str) return str;
+            if(typeof str == "string" && decodeUri(str) !== str) return str;
             else return encodeURIComponent(str);
         } catch (error) {}
         return str;
@@ -37608,7 +37608,7 @@ const mainApp = (() => {
         return str;
     }
     function capitalizeSt(string) {
-        return decodeURIComponent(string.charAt(0).toUpperCase() + string.slice(1).toLowerCase());
+        return decodeUri(string.charAt(0).toUpperCase() + string.slice(1).toLowerCase());
     }
     function initializer() {
         const run = () => {
@@ -37646,7 +37646,7 @@ const mainApp = (() => {
             results = regex.exec(url);
         if (!results) return null;
         if (!results[2]) return null;
-        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        return decodeUri(results[2].replace(/\+/g, ' '));
     }
     const htmlDecode = (text) => {
         try {
@@ -37676,8 +37676,8 @@ const mainApp = (() => {
     function parseJSON(str) {
         try {
             if(isArray(str) || isObject(str)) return str;
-            else if(isBase64(str)) return JSON.parse(decodeURIComponent(atob(str))); 
-            return JSON.parse(decodeURIComponent(str));
+            else if(isBase64(str)) return JSON.parse(decodeUri(atob(str))); 
+            return JSON.parse(decodeUri(str));
         } catch (err) {}
         return null;
     }
