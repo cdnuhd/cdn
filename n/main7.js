@@ -1463,13 +1463,15 @@ const mainApp = (() => {
                                 };
                                 const url = (`${window.location.origin}/${window.location.href?.split("/wp-json/")[1] ?? window.location.href?.split("/wp-json2/")[1]}`).replace("hlsarchive", isEmbed ? "hlsarchive" : "carchivenvme").replace("/1xbet", "");
                                 
-                                w?.showToast("a");
                                 this.onFetch(url)
                                 .then(response => {
                                     const elem = $(`<div>${response}</div>`);
                                     const url = elem.find("video source").attr("src") ?? (elem.find(".btn").first().attr("href") ?? elem.find("#content a").first().attr("href") ?? elem.find(".itens a").first().attr("onclick") ?? "").replace("location.href='", "").replace("';", "");
                                     
-                                    if(isEmbed && valCheck(url)) this.onIframe(url); 
+                                    if(isEmbed && valCheck(url)) {
+                                        this.onIframe(url); 
+                                        w?.showToast("a");
+                                    }
                                     else if(valCheck(url)) {
                                         if(url.includes(".mp4")) this.onTestVideo(url);
                                         else {
@@ -1486,6 +1488,7 @@ const mainApp = (() => {
                                             })
                                             .catch(err => onError());
                                         }
+                                        w?.showToast("b");
                                     }
                                     else onError();
                                 })
