@@ -1468,11 +1468,7 @@ const mainApp = (() => {
                                     const elem = $(`<div>${response}</div>`);
                                     const url = elem.find("video source").attr("src") ?? (elem.find(".btn").first().attr("href") ?? elem.find("#content a").first().attr("href") ?? elem.find(".itens a").first().attr("onclick") ?? "").replace("location.href='", "").replace("';", "");
                                     
-                                    if(isEmbed && valCheck(url)) {
-                                        this.onIframe(url); 
-                                        this.onShow();
-                                        w?.showToast("a");
-                                    }
+                                    if(isEmbed && valCheck(url)) this.onIframe(url); 
                                     else if(valCheck(url)) {
                                         if(url.includes(".mp4")) this.onTestVideo(url);
                                         else {
@@ -1489,7 +1485,6 @@ const mainApp = (() => {
                                             })
                                             .catch(err => onError());
                                         }
-                                        w?.showToast("b");
                                     }
                                     else onError();
                                 })
@@ -1677,7 +1672,7 @@ const mainApp = (() => {
                                     const item = {};
                                     elem = $(elem);
                     
-                                    item.title = decodeURIComponent(escape(`${t.option} ${index+1}`));
+                                    item.title = `${t.option} ${index+1}`;
                                     item.index = index;
                                     item.val = "#menuDropdown button, .stream-btn";
                                     item.isSelected = false;
@@ -1718,7 +1713,7 @@ const mainApp = (() => {
                                     const item = {};
                                     elem = $(elem);
                     
-                                    item.title = decodeURIComponent(escape(`${t.option} ${index+1}`));
+                                    item.title = `${t.option} ${index+1}`;
                                     item.index = index;
                                     item.val = ".options_iframe a, .btn-player button";
                                     item.isSelected = false;
@@ -1754,7 +1749,7 @@ const mainApp = (() => {
                                     const item = {};
                                     elem = $(elem);
                     
-                                    item.title = decodeURIComponent(escape(`${t.option} ${index+1}`));
+                                    item.title = `${t.option} ${index+1}`;
                                     item.index = index;
                                     item.val = ".button-sinals button";
                                     item.isSelected = false;
@@ -1778,7 +1773,7 @@ const mainApp = (() => {
                                     const item = {};
                                     elem = $(elem);
                     
-                                    item.title = decodeURIComponent(escape(`${t.option} ${index+1}`));
+                                    item.title = `${t.option} ${index+1}`;
                                     item.index = index;
                                     item.val = "#players a";
                                     item.isSelected = false;
@@ -1803,7 +1798,7 @@ const mainApp = (() => {
                                     elem = $(elem);
                     
                                     elem.attr("href", elem.attr("href").replace("xhttps://links2", "https://links3"));
-                                    item.title = decodeURIComponent(escape(`${t.option} ${index+1}`));
+                                    item.title = `${t.option} ${index+1}`;
                                     item.index = index;
                                     item.val = ".canais.wf a";
                                     item.isSelected = false;
@@ -1823,7 +1818,7 @@ const mainApp = (() => {
                                     const item = {};
                                     elem = $(elem);
                     
-                                    item.title = decodeURIComponent(escape(`${t.option} ${index+1}`));
+                                    item.title = `${t.option} ${index+1}`;
                                     item.index = index;
                                     item.val = "[data-playertipo]";
                                     item.isSelected = false;
@@ -1837,7 +1832,7 @@ const mainApp = (() => {
                                     const item = {};
                                     elem = $(elem);
                     
-                                    item.title = decodeURIComponent(escape(`${t.option} ${index+1}`));
+                                    item.title = `${t.option} ${index+1}`;
                                     item.index = index;
                                     item.val = ".py-2 button";
                                     item.isSelected = false;
