@@ -1470,6 +1470,7 @@ const mainApp = (() => {
                                     
                                     if(isEmbed && valCheck(url)) {
                                         this.onIframe(url); 
+                                        this.onShow();
                                         w?.showToast("a");
                                     }
                                     else if(valCheck(url)) {
